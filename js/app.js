@@ -19,7 +19,7 @@ function renderMenu() {
   document.getElementById('btn-new-set').textContent = t.newSet;
   document.getElementById('btn-sound').textContent = soundEnabled ? ('🔊 ' + t.soundOn) : ('🔇 ' + t.soundOff);
   document.getElementById('btn-sound').classList.toggle('active', soundEnabled);
-  document.getElementById('btn-lang').textContent = currentLang === 'nl' ? '🇬🇧 English' : '🇳🇱 Nederlands';
+  document.getElementById('btn-lang').textContent = currentLang === 'nl' ? '🇳🇱 NL → 🇬🇧 EN' : '🇬🇧 EN → 🇳🇱 NL';
 
   const h = document.getElementById('hw-sets'), e = document.getElementById('extra-sets'), c = document.getElementById('custom-sets');
   h.innerHTML = ''; e.innerHTML = ''; c.innerHTML = '';

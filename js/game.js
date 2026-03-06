@@ -111,7 +111,7 @@ function handleClick(loc) {
     showToast(`${T().retryCorrect(loc)}`, null, 'correct');
     GS.used.add(GS.question.tid); GS.round++; updateHUD();
     clearTimeout(msgTimeout);
-    msgTimeout = setTimeout(() => nextQ(), 2500);
+    msgTimeout = setTimeout(() => nextQ(), 4000);
     return;
   }
 
@@ -129,9 +129,10 @@ function handleClick(loc) {
     });
     soundMissileIncoming();
   } else {
-    // Small boom for wrong
+    // Small boom for wrong + fart
     spawnBoom(pt.x, pt.y, isMobile ? .9 : 1.2);
     soundSmallBoom();
+    setTimeout(() => soundFart(), 300);
     doFlash(); doShake();
   }
 
@@ -151,7 +152,7 @@ function handleClick(loc) {
     showToast(pick(T().right)(loc), fact, 'correct');
     GS.used.add(GS.question.tid); GS.round++; updateHUD();
     clearTimeout(msgTimeout);
-    msgTimeout = setTimeout(() => nextQ(), 3500);
+    msgTimeout = setTimeout(() => nextQ(), 5000);
   } else {
     GS.streak = 0;
     const correctLoc = GS.locs.find(l => GS.question.ids.has(l.id));
@@ -170,7 +171,7 @@ function handleClick(loc) {
       map.flyTo([correctLoc.lat, correctLoc.lng], 6, { duration: .8 });
       showToast(`👆 ${T().retryHint(correctLoc)}`, fact, 'correct');
       GS.retrying = true; GS.busy = false;
-    }, 8000);
+    }, 6000);
   }
 }
 

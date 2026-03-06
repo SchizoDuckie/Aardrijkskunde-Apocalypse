@@ -54,31 +54,51 @@ function playTone(freq, duration, type, volume) {
   osc.stop(audioCtx.currentTime + duration);
 }
 
+// Sound file pools - preload for caching, play as fresh instances to avoid overlap
+const fartFiles = ['sfx/fart1.mp3', 'sfx/fart2.mp3', 'sfx/fart3.mp3'];
+const boomFiles = ['sfx/boom1.mp3', 'sfx/boom2.mp3', 'sfx/boom3.mp3'];
+// Preload all files into browser cache
+fartFiles.concat(boomFiles).forEach(f => { const a = new Audio(f); a.preload = 'auto'; });
+
+// Track last played index to avoid repeats
+let lastFart = -1, lastBoom = -1;
+
+function pickRandom(files, lastIdx) {
+  if (files.length <= 1) return 0;
+  let idx;
+  do { idx = Math.floor(Math.random() * files.length); } while (idx === lastIdx);
+  return idx;
+}
+
+function playFile(file, volume) {
+  const a = new Audio(file);
+  a.volume = volume;
+  a.play().catch(() => {});
+}
+
+function soundFart() {
+  if (!soundEnabled) return;
+  lastFart = pickRandom(fartFiles, lastFart);
+  playFile(fartFiles[lastFart], 0.6);
+}
+
 // Small explosion (wrong answer)
 function soundSmallBoom() {
   if (!soundEnabled) return;
-  initAudio();
-  playNoise(0.6, 0.4, 600);
-  playTone(80, 0.4, 'sine', 0.3);
-  playTone(50, 0.6, 'sine', 0.2);
+  lastBoom = pickRandom(boomFiles, lastBoom);
+  playFile(boomFiles[lastBoom], 0.4);
 }
 
-// MEGA explosion (correct answer) - deep bass + layered noise
+// MEGA explosion (correct answer) - play loud + synth bass rumble for extra oomph
 function soundMegaBoom() {
   if (!soundEnabled) return;
   initAudio();
-  // deep bass rumble
-  playTone(30, 1.5, 'sine', 0.5);
-  playTone(55, 1.0, 'sine', 0.4);
-  // impact noise
-  playNoise(1.2, 0.6, 1200);
-  // delayed secondary boom
-  setTimeout(() => {
-    playNoise(0.8, 0.3, 500);
-    playTone(40, 0.8, 'sine', 0.3);
-  }, 200);
-  // crackle
-  setTimeout(() => playNoise(0.5, 0.15, 2000), 400);
+  lastBoom = pickRandom(boomFiles, lastBoom);
+  playFile(boomFiles[lastBoom], 0.8);
+  // extra synth bass for that chest-thumping feel
+  playTone(30, 1.5, 'sine', 0.4);
+  playTone(55, 1.0, 'sine', 0.3);
+  playNoise(0.8, 0.3, 800);
 }
 
 // Missile incoming whoosh
