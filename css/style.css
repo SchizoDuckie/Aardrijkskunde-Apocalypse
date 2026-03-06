@@ -173,26 +173,27 @@ body { height: 100dvh }
 /* ■ Land = bright filled square */
 .nuke-marker.land .dot { width: 14px; height: 14px; border-radius: 2px; background: var(--accent4); border: 2px solid #fff; box-shadow: 0 0 8px #aa66ff88 }
 
-/* ∼ Water = wavy lines */
+/* ≈ Water = wavy lines (HTML content, not pseudo-element) */
 .nuke-marker.water .dot {
   width: 22px; height: 16px; background: none; border: none;
+}
+.nuke-marker.water .dot .wave-icon {
   font-size: 20px; color: #66bbff; font-weight: 700;
   text-shadow: 0 0 8px #4488ffaa, 0 0 16px #4488ff44;
+  line-height: 1;
 }
-.nuke-marker.water .dot::before { content: '\2248'; /* ≈ */ }
 .nuke-marker.water .dot::after { border-color: #4488ff44 }
 
-/* 🏛 Gebied = flag/banner icon */
+/* ⚑ Gebied = flag/banner (HTML content) */
 .nuke-marker.gebied .dot {
   width: 18px; height: 20px; background: none; border: none; position: relative;
 }
-.nuke-marker.gebied .dot::before {
-  content: '';
+.nuke-marker.gebied .dot .flag-pole {
   position: absolute; top: 0; left: 4px;
   width: 2px; height: 18px; background: #fff;
   box-shadow: 0 0 4px #ffffff88;
 }
-.nuke-marker.gebied .dot .flag {
+.nuke-marker.gebied .dot .flag-banner {
   position: absolute; top: 1px; left: 6px;
   width: 11px; height: 9px; background: var(--accent3);
   clip-path: polygon(0 0, 100% 15%, 85% 50%, 100% 85%, 0 100%);
@@ -200,13 +201,15 @@ body { height: 100dvh }
 }
 .nuke-marker.gebied .dot::after { border-color: #ffcc3344 }
 
-/* ★ Bijzonderheid = star */
+/* ★ Bijzonderheid = star (HTML content) */
 .nuke-marker.bijzonderheid .dot {
   width: 18px; height: 18px; background: none; border: none;
+}
+.nuke-marker.bijzonderheid .dot .star-icon {
   font-size: 18px; color: var(--accent3);
   text-shadow: 0 0 8px #ffcc33aa, 0 0 16px #ffcc3344;
+  line-height: 1;
 }
-.nuke-marker.bijzonderheid .dot::before { content: '\2605'; /* ★ */ }
 .nuke-marker.bijzonderheid .dot::after { border-color: #ffcc3344 }
 
 /* Labels */

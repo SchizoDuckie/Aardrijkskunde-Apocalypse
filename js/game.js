@@ -33,7 +33,9 @@ function startGame(dataset) {
     const type = loc.tags.type || 'city';
     // Build dot inner content based on type (matching textbook icons)
     let dotInner = '';
-    if (type === 'gebied') dotInner = '<div class="flag"></div>';
+    if (type === 'gebied') dotInner = '<span class="flag-pole"></span><span class="flag-banner"></span>';
+    else if (type === 'water') dotInner = '<span class="wave-icon">\u2248</span>';
+    else if (type === 'bijzonderheid') dotInner = '<span class="star-icon">\u2605</span>';
     const icon = L.divIcon({
       className: '', iconSize: [0, 0], iconAnchor: [0, 0],
       html: `<div class="nuke-marker ${type}" data-id="${loc.id}"><div class="dot">${dotInner}</div></div>`
