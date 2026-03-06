@@ -159,8 +159,8 @@ body { height: 100dvh }
 
 /* ===== MARKERS (matching textbook icons) ===== */
 /* Legend: ■ Land, ● Plaats/hoofdstad, 🏛 Gebied, ∼ Water, ★ Bijzonderheid */
-.nuke-marker { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; cursor: pointer; transition: transform .15s }
-.nuke-marker:active { transform: scale(1.3) }
+.nuke-marker { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; cursor: pointer; transition: transform .15s; transform: translate(-50%, -50%) }
+.nuke-marker:active { transform: translate(-50%, -50%) scale(1.3) }
 .nuke-marker .dot { width: 16px; height: 16px; position: relative; display: flex; align-items: center; justify-content: center }
 .nuke-marker .dot::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #ffffff44; opacity: .5; animation: pulse 2s infinite }
 
