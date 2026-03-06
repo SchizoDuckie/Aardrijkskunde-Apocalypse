@@ -1,0 +1,254 @@
+:root {
+  --g: #44ff88;
+  --r: #ff4400;
+  --bg: #0a0a2e;
+  --p: #12123a;
+  --m: 'Share Tech Mono', 'Courier New', monospace;
+  --d: 'Orbitron', monospace;
+  --accent1: #ff66aa;
+  --accent2: #66ccff;
+  --accent3: #ffcc33;
+  --accent4: #aa66ff;
+  --accent5: #ff8844;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent }
+html, body { height: 100%; overflow: hidden; background: var(--bg); font-family: var(--m); color: var(--g) }
+body { height: 100dvh }
+
+.screen { display: none; width: 100%; height: 100dvh; flex-direction: column }
+.screen.active { display: flex }
+
+/* ===== MENU ===== */
+#menu { align-items: center; justify-content: center; background: radial-gradient(ellipse at 30% 20%, #1a0a3a 0%, var(--bg) 50%, #0a1a2e 100%); overflow: auto }
+#menu .inner { text-align: center; padding: 20px; max-width: 520px; width: 100% }
+
+.title { font-family: var(--d); font-size: clamp(20px, 5vw, 34px); letter-spacing: 2px; line-height: 1.2; margin: 0 0 4px }
+.title .word1 { color: var(--accent2); text-shadow: 0 0 30px #66ccff44 }
+.title .word2 { color: var(--accent1); text-shadow: 0 0 30px #ff66aa44 }
+.subtitle { font-size: 11px; letter-spacing: 5px; color: var(--accent3); margin-bottom: 8px; text-shadow: 0 0 10px #ffcc3344 }
+.desc { color: #aabbcc; font-size: 12px; margin-bottom: 20px }
+.section-label { color: var(--accent4); font-size: 10px; letter-spacing: 3px; margin: 16px 0 8px; text-shadow: 0 0 8px #aa66ff33 }
+
+.set-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px; margin-bottom: 6px;
+  border: 1px solid #ffffff22; cursor: pointer; transition: all .15s;
+  background: linear-gradient(135deg, #ffffff08, #ffffff03);
+  border-radius: 8px;
+}
+.set-card:hover, .set-card:active { border-color: var(--accent2); background: linear-gradient(135deg, #66ccff11, #ff66aa08); transform: scale(1.02) }
+.set-card .info { flex: 1; min-width: 0; text-align: left }
+.set-card .info .name { color: #fff; font-size: 14px }
+.set-card .info .meta { color: #aabbcc88; font-size: 10px }
+.set-card .play-btn {
+  width: 44px; height: 44px; border: 2px solid var(--accent1); background: 0 0;
+  color: var(--accent1); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  border-radius: 50%; transition: all .15s;
+}
+.set-card .play-btn:hover { background: var(--accent1); color: #000 }
+
+/* ===== TOOLBAR (sound + language) ===== */
+.toolbar {
+  display: flex; gap: 10px; justify-content: center; margin: 16px 0 8px;
+}
+.toolbar-btn {
+  background: #ffffff11; border: 1px solid #ffffff33; color: #fff;
+  font-family: var(--m); font-size: 12px; padding: 8px 14px;
+  cursor: pointer; border-radius: 6px; transition: all .15s;
+  min-height: 40px; display: flex; align-items: center; gap: 6px;
+}
+.toolbar-btn:hover { border-color: var(--accent2); background: #ffffff22 }
+.toolbar-btn.active { border-color: var(--accent3); color: var(--accent3) }
+
+/* ===== BUTTONS ===== */
+.btn {
+  background: 0 0; border: 2px solid var(--accent1); color: var(--accent1);
+  font-family: var(--m); font-weight: 700; font-size: 14px;
+  padding: 12px 28px; min-height: 44px; cursor: pointer;
+  letter-spacing: 2px; transition: all .15s; border-radius: 8px;
+}
+.btn:hover, .btn:active { background: var(--accent1); color: #000 }
+.btn.sec { border-color: var(--accent2); color: var(--accent2) }
+.btn.sec:hover, .btn.sec:active { background: var(--accent2); color: #000 }
+.btn.sm { font-size: 12px; padding: 8px 16px }
+.btn:disabled { opacity: .3; cursor: not-allowed }
+.btn:disabled:hover { background: 0 0; color: var(--accent1) }
+
+/* ===== GAME HUD ===== */
+#game { position: relative }
+#game-hud { flex-shrink: 0; background: linear-gradient(180deg, var(--p), #0a0a28); border-bottom: 1px solid #ffffff22; z-index: 1000; position: relative }
+.hud-top { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; font-size: 12px; gap: 8px }
+.hud-stop { background: 0 0; border: 1px solid #ff440066; color: var(--r); font-family: var(--m); font-size: 11px; padding: 6px 12px; cursor: pointer; min-height: 40px; border-radius: 6px }
+.hud-round { color: var(--accent3); white-space: nowrap }
+.hud-score { font-family: var(--d); font-weight: 700; font-size: 18px; color: var(--accent2) }
+.hud-streak { color: var(--accent3); font-family: var(--d); font-weight: 700; font-size: 13px }
+.hud-question {
+  padding: 4px 10px 10px; text-align: center;
+  color: #fff; font-size: clamp(14px, 3.5vw, 18px);
+  font-family: var(--d); font-weight: 700; letter-spacing: .5px;
+  line-height: 1.3; text-shadow: 0 0 20px #66ccff44;
+}
+.hud-qd {
+  flex: 1; text-align: center; color: #fff;
+  font-size: 16px; font-family: var(--d); font-weight: 700;
+  letter-spacing: 1px; text-shadow: 0 0 20px #66ccff44;
+}
+
+/* ===== MAP ===== */
+#map-wrap { flex: 1; position: relative; overflow: hidden }
+#map { width: 100%; height: 100%; z-index: 1 }
+#boom-canvas { position: absolute; inset: 0; z-index: 800; pointer-events: none }
+#missile-layer { position: absolute; inset: 0; z-index: 801; pointer-events: none; overflow: hidden }
+
+/* ===== TOAST ===== */
+#toast {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 900; padding: 12px 20px; max-width: 92%; text-align: center;
+  font-family: var(--m); font-size: 13px; line-height: 1.5;
+  display: none; animation: pop .3s ease-out; border-radius: 10px;
+}
+#toast.correct { background: #0a2a15ee; border: 2px solid var(--g); color: var(--g); box-shadow: 0 0 30px #44ff8844 }
+#toast.wrong { background: #2a0a0aee; border: 2px solid var(--r); color: var(--r); box-shadow: 0 0 30px #ff440044 }
+#toast .fact { display: block; margin-top: 6px; font-size: 11px; opacity: .85; color: var(--accent3); line-height: 1.4 }
+
+#flash-overlay { position: fixed; inset: 0; background: white; z-index: 9999; pointer-events: none; display: none }
+
+/* ===== RESULTS ===== */
+#results { align-items: center; justify-content: center; background: radial-gradient(ellipse at center, var(--p) 0%, var(--bg) 70%) }
+#results .inner { text-align: center; padding: 20px; max-width: 500px; width: 100% }
+.stat-row { display: flex; gap: 30px; justify-content: center; margin: 22px 0 }
+.stat-box { text-align: center }
+.stat-label { font-size: 10px; color: #aabbcc88 }
+.stat-value { font-family: var(--d); font-weight: 900 }
+.rank-box { margin: 10px 0 22px; padding: 10px 24px; display: inline-block; border-radius: 10px }
+.btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap }
+
+/* ===== HIGHSCORE ===== */
+.hs-input {
+  background: var(--p); border: 2px solid var(--accent3); color: #fff;
+  font-family: var(--m); font-size: 16px; padding: 10px; outline: 0;
+  width: 200px; border-radius: 6px; text-align: center; margin: 8px 0;
+}
+.hs-table { width: 100%; max-width: 400px; margin: 12px auto; border-collapse: collapse; font-size: 12px }
+.hs-table th { color: var(--accent4); font-size: 10px; letter-spacing: 2px; padding: 6px; border-bottom: 1px solid #ffffff22 }
+.hs-table td { padding: 6px 8px; border-bottom: 1px solid #ffffff0a; color: #ccc }
+.hs-table .hs-rank { color: var(--accent3); font-family: var(--d); font-weight: 700 }
+.hs-table .hs-name { color: #fff }
+.hs-table .hs-score { color: var(--accent2); font-family: var(--d); font-weight: 700 }
+.hs-table tr.hs-you td { color: var(--accent3) }
+.hs-table tr.hs-gold td.hs-rank { color: #ffd700 }
+.hs-table tr.hs-silver td.hs-rank { color: #c0c0c0 }
+.hs-table tr.hs-bronze td.hs-rank { color: #cd7f32 }
+
+/* ===== EDITOR ===== */
+#editor { overflow: auto; background: var(--bg) }
+#editor .inner { max-width: 600px; margin: 0 auto; padding: 16px }
+.ed-input {
+  background: var(--p); border: 1px solid #ffffff33; color: #fff;
+  font-family: var(--m); font-size: 16px; padding: 10px; outline: 0;
+  width: 100%; border-radius: 6px;
+}
+.ed-label { color: #aabbcc88; font-size: 10px; display: block; margin-bottom: 3px }
+.ed-section { border: 1px solid #ffffff22; padding: 10px; margin-bottom: 12px; background: #ffffff05; border-radius: 8px }
+.loc-item { display: flex; align-items: center; padding: 8px; gap: 6px; border-bottom: 1px solid #ffffff0a; font-size: 11px }
+.loc-item .loc-name { color: #fff; flex-shrink: 0 }
+.loc-item .loc-tags { color: #aabbcc66; font-size: 9px; flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.loc-item .loc-del { background: 0 0; border: 0; color: #ff440088; cursor: pointer; font-family: var(--m); font-size: 16px; padding: 4px 8px; min-width: 40px; min-height: 40px }
+
+/* ===== MARKERS (matching textbook icons) ===== */
+/* Legend: ■ Land, ● Plaats/hoofdstad, 🏛 Gebied, ∼ Water, ★ Bijzonderheid */
+.nuke-marker { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; cursor: pointer; transition: transform .15s }
+.nuke-marker:active { transform: scale(1.3) }
+.nuke-marker .dot { width: 16px; height: 16px; position: relative; display: flex; align-items: center; justify-content: center }
+.nuke-marker .dot::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #ffffff44; opacity: .5; animation: pulse 2s infinite }
+
+/* ● Plaats / hoofdstad = bright filled circle */
+.nuke-marker.capital .dot,
+.nuke-marker.city .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent1); border: 2px solid #fff; box-shadow: 0 0 8px #ff66aa88 }
+.nuke-marker.capital .dot { background: var(--accent1) }
+.nuke-marker.city .dot { background: var(--accent2) }
+
+/* ■ Land = bright filled square */
+.nuke-marker.land .dot { width: 14px; height: 14px; border-radius: 2px; background: var(--accent4); border: 2px solid #fff; box-shadow: 0 0 8px #aa66ff88 }
+
+/* ∼ Water = wavy lines */
+.nuke-marker.water .dot {
+  width: 22px; height: 16px; background: none; border: none;
+  font-size: 20px; color: #66bbff; font-weight: 700;
+  text-shadow: 0 0 8px #4488ffaa, 0 0 16px #4488ff44;
+}
+.nuke-marker.water .dot::before { content: '\2248'; /* ≈ */ }
+.nuke-marker.water .dot::after { border-color: #4488ff44 }
+
+/* 🏛 Gebied = flag/banner icon */
+.nuke-marker.gebied .dot {
+  width: 18px; height: 20px; background: none; border: none; position: relative;
+}
+.nuke-marker.gebied .dot::before {
+  content: '';
+  position: absolute; top: 0; left: 4px;
+  width: 2px; height: 18px; background: #fff;
+  box-shadow: 0 0 4px #ffffff88;
+}
+.nuke-marker.gebied .dot .flag {
+  position: absolute; top: 1px; left: 6px;
+  width: 11px; height: 9px; background: var(--accent3);
+  clip-path: polygon(0 0, 100% 15%, 85% 50%, 100% 85%, 0 100%);
+  box-shadow: 0 0 6px #ffcc3388;
+}
+.nuke-marker.gebied .dot::after { border-color: #ffcc3344 }
+
+/* ★ Bijzonderheid = star */
+.nuke-marker.bijzonderheid .dot {
+  width: 18px; height: 18px; background: none; border: none;
+  font-size: 18px; color: var(--accent3);
+  text-shadow: 0 0 8px #ffcc33aa, 0 0 16px #ffcc3344;
+}
+.nuke-marker.bijzonderheid .dot::before { content: '\2605'; /* ★ */ }
+.nuke-marker.bijzonderheid .dot::after { border-color: #ffcc3344 }
+
+/* Labels */
+.nuke-marker .label {
+  font-family: var(--m); font-size: 11px; color: #ffffffcc;
+  text-shadow: 0 0 4px #000, 0 0 8px #000, 1px 1px 2px #000;
+  white-space: nowrap; margin-bottom: 4px; pointer-events: none; font-weight: 700;
+}
+.nuke-marker.water .label { color: #88bbff }
+.nuke-marker.gebied .label { color: var(--accent3) }
+.nuke-marker.bijzonderheid .label { color: var(--accent3) }
+
+/* Nuked state */
+.nuke-marker.nuked .dot { background: #ff440044 !important; border-color: #ff440033 !important; color: #ff440044 !important }
+.nuke-marker.nuked .dot::after { display: none }
+.nuke-marker.nuked .dot::before { color: #ff440044 !important }
+.nuke-marker.nuked .label { color: #ff440066 !important; text-decoration: line-through }
+.nuke-marker.nuked::before { content: '\2715'; color: #ff4400aa; font-size: 18px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; pointer-events: none }
+
+/* Highlight state (correct answer reveal) */
+.nuke-marker.highlight .dot { background: var(--g) !important; border-color: var(--g) !important; color: var(--g) !important; box-shadow: 0 0 20px var(--g), 0 0 40px #44ff8888, 0 0 60px #44ff8844 }
+.nuke-marker.highlight .dot::before { color: var(--g) !important }
+.nuke-marker.highlight .dot::after { border-color: var(--g); animation: beacon 1s infinite }
+.nuke-marker.highlight .label { color: var(--g) !important; font-size: 14px !important; text-shadow: 0 0 10px var(--g), 0 0 20px #44ff8888, 0 0 4px #000 }
+
+/* ===== MISSILE ===== */
+.missile {
+  position: absolute; font-size: 60px; filter: drop-shadow(0 0 20px #ff6600) drop-shadow(0 0 40px #ff4400);
+  animation: missileShake .1s infinite alternate;
+  z-index: 802;
+}
+.missile-trail {
+  position: absolute; width: 8px; border-radius: 4px;
+  background: linear-gradient(to bottom, transparent, #ff6600, #ff990088, transparent);
+  z-index: 801; opacity: .7;
+}
+
+@keyframes missileShake { from { transform: translate(-1px, 0) rotate(178deg) } to { transform: translate(1px, 0) rotate(182deg) } }
+@keyframes pulse { 0%, 100% { opacity: .4; transform: scale(1) } 50% { opacity: 1; transform: scale(1.15) } }
+@keyframes beacon { 0%, 100% { opacity: .6; transform: scale(1) } 50% { opacity: 1; transform: scale(1.8) } }
+@keyframes pop { from { transform: translateX(-50%) scale(.9); opacity: 0 } to { transform: translateX(-50%) scale(1); opacity: 1 } }
+
+.scanline { position: absolute; inset: 0; pointer-events: none; z-index: 999; background: repeating-linear-gradient(0deg, transparent, transparent 2px, #ffffff03 2px, #ffffff03 4px) }
+.leaflet-control-attribution { font-size: 8px !important; opacity: .4 }
+.leaflet-control-zoom { display: none }

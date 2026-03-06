@@ -7,108 +7,30 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<style>
-:root{--g:#44ff88;--r:#ff4400;--bg:#060e09;--p:#0a1a12;--m:'Share Tech Mono','Courier New',monospace;--d:'Orbitron',monospace}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--m);color:var(--g)}
-body{height:100dvh}
-.screen{display:none;width:100%;height:100dvh;flex-direction:column}
-.screen.active{display:flex}
-#menu{align-items:center;justify-content:center;background:radial-gradient(ellipse at center,var(--p) 0%,var(--bg) 70%);overflow:auto}
-#menu .inner{text-align:center;padding:20px;max-width:520px;width:100%}
-.title{font-family:var(--d);font-size:clamp(20px,5vw,34px);color:var(--g);letter-spacing:2px;line-height:1.2;margin:0 0 4px;text-shadow:0 0 30px #44ff8844}
-.title span{color:var(--r)}
-.subtitle{font-size:11px;letter-spacing:5px;color:var(--r);margin-bottom:8px}
-.desc{color:#44ff8888;font-size:12px;margin-bottom:20px}
-.section-label{color:#44ff8866;font-size:10px;letter-spacing:3px;margin:16px 0 8px}
-.set-card{display:flex;align-items:center;justify-content:space-between;padding:12px;margin-bottom:6px;border:1px solid #44ff8822;cursor:pointer;transition:border-color .15s}
-.set-card:hover,.set-card:active{border-color:#44ff8866}
-.set-card .info{flex:1;min-width:0;text-align:left}
-.set-card .info .name{color:var(--g);font-size:14px}
-.set-card .info .meta{color:#44ff8855;font-size:10px}
-.set-card .play-btn{width:44px;height:44px;border:1px solid #44ff8866;background:0 0;color:var(--g);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.btn{background:0 0;border:2px solid var(--r);color:var(--r);font-family:var(--m);font-weight:700;font-size:14px;padding:12px 28px;min-height:44px;cursor:pointer;letter-spacing:2px;transition:all .15s}
-.btn:hover,.btn:active{background:var(--r);color:#000}
-.btn.sec{border-color:var(--g);color:var(--g)}.btn.sec:hover,.btn.sec:active{background:var(--g);color:#000}
-.btn.sm{font-size:12px;padding:8px 16px}
-.btn:disabled{opacity:.3;cursor:not-allowed}.btn:disabled:hover{background:0 0;color:var(--r)}
-#game{position:relative}
-#game-hud{flex-shrink:0;background:var(--p);border-bottom:1px solid #44ff8833;z-index:1000;position:relative}
-.hud-top{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:12px;gap:8px}
-.hud-stop{background:0 0;border:1px solid #ff440066;color:var(--r);font-family:var(--m);font-size:11px;padding:6px 12px;cursor:pointer;min-height:40px}
-.hud-round{color:var(--r);white-space:nowrap}
-.hud-score{font-family:var(--d);font-weight:700;font-size:18px}
-.hud-streak{color:#ffaa00;font-family:var(--d);font-weight:700;font-size:13px}
-.hud-question{padding:4px 10px 10px;text-align:center;color:var(--g);font-size:clamp(14px,3.5vw,18px);font-family:var(--d);font-weight:700;letter-spacing:.5px;line-height:1.3;text-shadow:0 0 20px #44ff8866}
-.hud-qd{flex:1;text-align:center;color:var(--g);font-size:16px;font-family:var(--d);font-weight:700;letter-spacing:1px;text-shadow:0 0 20px #44ff8866}
-#map-wrap{flex:1;position:relative;overflow:hidden}
-#map{width:100%;height:100%;z-index:1}
-#boom-canvas{position:absolute;inset:0;z-index:800;pointer-events:none}
-#toast{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:900;padding:12px 20px;max-width:92%;text-align:center;font-family:var(--m);font-size:13px;line-height:1.5;display:none;animation:pop .3s ease-out}
-#toast.correct{background:#0a2a15ee;border:2px solid var(--g);color:var(--g);box-shadow:0 0 30px #44ff8844}
-#toast.wrong{background:#2a0a0aee;border:2px solid var(--r);color:var(--r);box-shadow:0 0 30px #ff440044}
-#toast .fact{display:block;margin-top:6px;font-size:11px;opacity:.85;color:#ffcc44;line-height:1.4}
-#flash-overlay{position:fixed;inset:0;background:white;z-index:9999;pointer-events:none;display:none}
-#results{align-items:center;justify-content:center;background:radial-gradient(ellipse at center,var(--p) 0%,var(--bg) 70%)}
-#results .inner{text-align:center;padding:20px}
-.stat-row{display:flex;gap:30px;justify-content:center;margin:22px 0}
-.stat-box{text-align:center}.stat-label{font-size:10px;color:#44ff8888}
-.stat-value{font-family:var(--d);font-weight:900}
-.rank-box{margin:10px 0 22px;padding:10px 24px;display:inline-block}
-.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-#editor{overflow:auto;background:var(--bg)}
-#editor .inner{max-width:600px;margin:0 auto;padding:16px}
-.ed-input{background:var(--p);border:1px solid #44ff8844;color:var(--g);font-family:var(--m);font-size:16px;padding:10px;outline:0;width:100%;border-radius:0}
-.ed-label{color:#44ff8866;font-size:10px;display:block;margin-bottom:3px}
-.ed-section{border:1px solid #44ff8833;padding:10px;margin-bottom:12px;background:#04100a}
-.loc-item{display:flex;align-items:center;padding:8px;gap:6px;border-bottom:1px solid #44ff8811;font-size:11px}
-.loc-item .loc-name{color:var(--g);flex-shrink:0}
-.loc-item .loc-tags{color:#44ff8866;font-size:9px;flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.loc-item .loc-del{background:0 0;border:0;color:#ff440088;cursor:pointer;font-family:var(--m);font-size:16px;padding:4px 8px;min-width:40px;min-height:40px}
-.nuke-marker{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:transform .15s}
-.nuke-marker:active{transform:scale(1.3)}
-.nuke-marker .dot{width:14px;height:14px;border-radius:50%;border:2px solid #000;position:relative}
-.nuke-marker .dot::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid #44ff8844;animation:pulse 2s infinite}
-.nuke-marker.capital .dot{background:var(--g)}
-.nuke-marker.city .dot{background:var(--g)}
-.nuke-marker.land .dot{background:#44ff88aa;border-radius:3px}
-.nuke-marker.water .dot{background:#4488ffaa;border-radius:50%}
-.nuke-marker.gebied .dot{background:#ffaa44aa;border-radius:50%;border-style:dashed}
-.nuke-marker .label{font-family:var(--m);font-size:11px;color:#44ff88cc;text-shadow:0 0 4px #000,0 0 8px #000,1px 1px 2px #000;white-space:nowrap;margin-bottom:4px;pointer-events:none;font-weight:700}
-.nuke-marker.water .label{color:#6699ffcc}
-.nuke-marker.gebied .label{color:#ffbb66cc}
-.nuke-marker.nuked .dot{background:#ff440044!important;border-color:#ff440033!important}
-.nuke-marker.nuked .dot::after{display:none}
-.nuke-marker.nuked .label{color:#ff440066!important;text-decoration:line-through}
-.nuke-marker.nuked::before{content:'✕';color:#ff4400aa;font-size:18px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:none}
-/* highlight pulse for correct answer reveal */
-.nuke-marker.highlight .dot{background:#44ff88!important;border-color:#44ff88!important;box-shadow:0 0 20px #44ff88,0 0 40px #44ff8888,0 0 60px #44ff8844}
-.nuke-marker.highlight .dot::after{border-color:#44ff88;animation:beacon 1s infinite}
-.nuke-marker.highlight .label{color:#44ff88!important;font-size:14px!important;text-shadow:0 0 10px #44ff88,0 0 20px #44ff8888,0 0 4px #000}
-.scanline{position:absolute;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,#44ff8805 2px,#44ff8805 4px)}
-.leaflet-control-attribution{font-size:8px!important;opacity:.4}
-.leaflet-control-zoom{display:none}
-@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
-@keyframes beacon{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.8)}}
-@keyframes pop{from{transform:translateX(-50%) scale(.9);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div id="flash-overlay"></div>
 
+<!-- ===== MENU ===== -->
 <div id="menu" class="screen active">
 <div class="scanline"></div>
 <div class="inner">
-  <div class="subtitle">⚠ GEHEIM WAPEN ⚠</div>
-  <h1 class="title">AARDRIJKSKUNDE<br><span>APOCALYPS</span></h1>
-  <div class="desc">Kies een set en blaas de juiste plekken op!</div>
-  <div class="section-label">HUISWERK SETS</div><div id="hw-sets"></div>
-  <div class="section-label">EXTRA SETS</div><div id="extra-sets"></div>
-  <div class="section-label">EIGEN SETS</div><div id="custom-sets"></div>
-  <div style="margin-top:14px"><button class="btn sm" onclick="showEditor()">+ NIEUWE SET</button></div>
+  <div class="subtitle" id="menu-subtitle">⚠ GEHEIM WAPEN ⚠</div>
+  <h1 class="title"><span class="word1" id="menu-title1">AARDRIJKSKUNDE</span><br><span class="word2" id="menu-title2">APOCALYPS</span></h1>
+  <div class="desc" id="menu-desc">Kies een set en blaas de juiste plekken op!</div>
+  <div class="toolbar">
+    <button class="toolbar-btn" id="btn-sound" onclick="onToggleSound()">🔊 GELUID AAN</button>
+    <button class="toolbar-btn" id="btn-lang" onclick="onToggleLang()">🇬🇧 English</button>
+  </div>
+  <div class="section-label" id="label-hw">HUISWERK SETS</div><div id="hw-sets"></div>
+  <div class="section-label" id="label-extra">EXTRA SETS</div><div id="extra-sets"></div>
+  <div class="section-label" id="label-custom">EIGEN SETS</div><div id="custom-sets"></div>
+  <div style="margin-top:14px"><button class="btn sm" id="btn-new-set" onclick="showEditor()">+ NIEUWE SET</button></div>
 </div>
 </div>
 
+<!-- ===== GAME ===== -->
 <div id="game" class="screen">
 <div id="game-hud">
   <div class="hud-top">
@@ -117,42 +39,49 @@ body{height:100dvh}
     <span class="hud-qd" id="hud-qd"></span>
     <div style="display:flex;gap:10px;align-items:center">
       <span class="hud-streak" id="hud-streak"></span>
-      <span class="hud-score" id="hud-score" style="color:var(--g)">0</span>
+      <span class="hud-score" id="hud-score">0</span>
     </div>
   </div>
   <div class="hud-question" id="hud-qm"></div>
 </div>
-<div id="map-wrap"><div id="map"></div><canvas id="boom-canvas"></canvas></div>
+<div id="map-wrap">
+  <div id="map"></div>
+  <canvas id="boom-canvas"></canvas>
+  <div id="missile-layer"></div>
+</div>
 <div id="toast"></div>
 </div>
 
+<!-- ===== RESULTS ===== -->
 <div id="results" class="screen">
 <div class="scanline"></div>
 <div class="inner">
-  <div style="font-size:12px;letter-spacing:4px;color:var(--r)">MISSIE VOLTOOID</div>
-  <h1 class="title" style="font-size:clamp(22px,5vw,34px);margin-top:10px">DEBRIEFING</h1>
+  <div id="res-mission" style="font-size:12px;letter-spacing:4px;color:var(--accent1)">MISSIE VOLTOOID</div>
+  <h1 class="title" style="font-size:clamp(22px,5vw,34px);margin-top:10px"><span class="word2" id="res-title">DEBRIEFING</span></h1>
   <div class="stat-row">
-    <div class="stat-box"><div class="stat-label">SCORE</div><div class="stat-value" id="res-score" style="font-size:30px;color:var(--g)"></div></div>
-    <div class="stat-box"><div class="stat-label">BESTE REEKS</div><div class="stat-value" id="res-streak" style="font-size:30px;color:#ffaa00"></div></div>
+    <div class="stat-box"><div class="stat-label" id="res-score-label">SCORE</div><div class="stat-value" id="res-score" style="font-size:30px;color:var(--accent2)"></div></div>
+    <div class="stat-box"><div class="stat-label" id="res-streak-label">BESTE REEKS</div><div class="stat-value" id="res-streak" style="font-size:30px;color:var(--accent3)"></div></div>
   </div>
-  <div class="rank-box" id="res-rank-box"><div class="stat-label">RANG</div><div class="stat-value" id="res-rank" style="font-size:24px"></div></div>
-  <div class="btn-row">
-    <button class="btn" onclick="restartGame()">🔄 OPNIEUW</button>
-    <button class="btn sec" onclick="showScreen('menu')">⬅ MENU</button>
+  <div class="rank-box" id="res-rank-box"><div class="stat-label" id="res-rank-label">RANG</div><div class="stat-value" id="res-rank" style="font-size:24px"></div></div>
+  <div id="hs-area"></div>
+  <div class="btn-row" style="margin-top:16px">
+    <button class="btn" id="btn-restart" onclick="restartGame()">🔄 OPNIEUW</button>
+    <button class="btn sec" id="btn-menu" onclick="showScreen('menu')">⬅ MENU</button>
   </div>
 </div>
 </div>
 
+<!-- ===== EDITOR ===== -->
 <div id="editor" class="screen">
 <div class="inner">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <h2 style="font-family:var(--d);color:var(--g);font-size:18px;letter-spacing:2px">SET BEWERKEN</h2>
+    <h2 style="font-family:var(--d);color:var(--accent2);font-size:18px;letter-spacing:2px">SET BEWERKEN</h2>
     <button class="hud-stop" onclick="showScreen('menu')" style="min-height:44px">✕</button>
   </div>
   <label class="ed-label">SET NAAM</label>
   <input id="ed-name" class="ed-input" value="Mijn Set" style="margin-bottom:12px">
   <div class="ed-section">
-    <div style="color:#44ff8888;font-size:10px;margin-bottom:8px">LOCATIE TOEVOEGEN</div>
+    <div style="color:#ffffff66;font-size:10px;margin-bottom:8px">LOCATIE TOEVOEGEN</div>
     <div style="margin-bottom:8px"><label class="ed-label">Naam</label><input id="ed-loc-name" class="ed-input" placeholder="b.v. Parijs"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
       <div><label class="ed-label">Lat</label><input id="ed-loc-lat" class="ed-input" placeholder="48.86" inputmode="decimal"></div>
@@ -178,551 +107,21 @@ body{height:100dvh}
       <div style="margin-top:6px"><button class="btn sm" onclick="editorImportJson()">IMPORTEER</button></div>
     </div>
   </div>
-  <div style="color:#44ff8888;font-size:10px;margin-bottom:6px">LOCATIES (<span id="ed-count">0</span>)</div>
+  <div style="color:#ffffff66;font-size:10px;margin-bottom:6px">LOCATIES (<span id="ed-count">0</span>)</div>
   <div id="ed-list" style="max-height:200px;overflow-y:auto;margin-bottom:12px"></div>
   <button class="btn" id="ed-save" onclick="editorSave()" disabled>💾 OPSLAAN</button>
   <div id="ed-warn" style="color:#ff440088;font-size:10px;margin-top:6px;display:none">Min. 3 locaties nodig</div>
 </div>
 </div>
 
-<script>
-// ============================================================
-// DATA
-// ============================================================
-function mkId(n){return n.toLowerCase().replace(/[^a-z0-9]/g,'-')+'-'+Math.random().toString(36).slice(2,6)}
-function mkLoc(name,lat,lng,tags={}){return{id:mkId(name),name,lat:+lat,lng:+lng,tags}}
-function pick(a){return a[Math.floor(Math.random()*a.length)]}
-
-const HOMEWORK={
-"tegel7":{label:"Tegel 7: Noord-Europa",description:"Landen, hoofdsteden, zeeën",hw:true,locations:[
-  mkLoc("Scandinavië",63.5,14,{type:"gebied",fact:"Scandinavië betekent 'land van de duisternis' — in de winter is het soms 24 uur donker!"}),
-  mkLoc("Noorwegen",62,8,{type:"land",fact:"Noorwegen heeft meer dan 1000 fjorden! De langste is 204 km."}),
-  mkLoc("Oslo",59.91,10.75,{type:"capital",capitalOf:"Noorwegen",fact:"In Oslo staat een enorme skischans midden in de stad!"}),
-  mkLoc("Zweden",62,16,{type:"land",fact:"Zweden heeft meer dan 200.000 eilanden!"}),
-  mkLoc("Denemarken",56,9.5,{type:"land",fact:"LEGO komt uit Denemarken! Het woord betekent 'speel goed' in het Deens."}),
-  mkLoc("Kopenhagen",55.68,12.57,{type:"capital",capitalOf:"Denemarken",fact:"In Kopenhagen staat het Zeemeerminbeeldje — maar het is maar 1,25 meter hoog!"}),
-  mkLoc("Polen",52,19.5,{type:"land",fact:"Polen heeft het grootste kasteel ter wereld: Malbork!"}),
-  mkLoc("Noordzee",57.5,3,{type:"water",fact:"Onder de Noordzee liggen olie- en gasvelden met meer dan 180 boorplatforms!"}),
-  mkLoc("Oostzee",58.5,19,{type:"water",fact:"De Oostzee is bijna zoet water! Maar een vijfde van de oceaan qua zout."}),
-  mkLoc("IJsland",65,-18.5,{type:"land",fact:"IJsland heeft geen leger! En er zijn meer schapen dan mensen."}),
-]},
-"tegel8":{label:"Tegel 8: Zweden & Finland",description:"Scandinavië in detail",hw:true,locations:[
-  mkLoc("Scandinavië",65,14,{type:"gebied",fact:"Vikingen kwamen uit Scandinavië — ze ontdekten Amerika 500 jaar vóór Columbus!"}),
-  mkLoc("Noorwegen",66,8,{type:"land",fact:"In Noord-Noorwegen kun je het noorderlicht zien!"}),
-  mkLoc("Zweden",62,16,{type:"land",fact:"Zweden heeft het IJshotel: elk jaar opnieuw gebouwd van ijs en sneeuw!"}),
-  mkLoc("Stockholm",59.33,18.07,{type:"capital",capitalOf:"Zweden",fact:"Stockholm is gebouwd op 14 eilanden met 57 bruggen!"}),
-  mkLoc("Oostzee",58.5,19,{type:"water",fact:"In de winter vriest de Oostzee soms zo hard dat je eroverheen kunt lopen!"}),
-  mkLoc("Helsinki",60.17,24.94,{type:"capital",capitalOf:"Finland",fact:"Helsinki heeft meer sauna's dan auto's!"}),
-  mkLoc("Finland",64,26,{type:"land",fact:"Finland heeft 188.000 meren! Het land van de duizend meren."}),
-  mkLoc("Rusland",60,33,{type:"land",fact:"Rusland is zo groot dat het 11 tijdzones heeft!"}),
-  mkLoc("Denemarken",56,9.5,{type:"land",fact:"Denemarken is een van de gelukkigste landen ter wereld!"}),
-]}};
-
-const EXTRAS={
-"europa":{label:"Europa Hoofdsteden",description:"Hoofdsteden van heel Europa",locations:[
-  mkLoc("Lissabon",38.72,-9.14,{type:"capital",capitalOf:"Portugal",fact:"Lissabon is ouder dan Rome!"}),
-  mkLoc("Madrid",40.42,-3.70,{type:"capital",capitalOf:"Spanje",fact:"Madrid heeft het oudste restaurant ter wereld: Botín, open sinds 1725!"}),
-  mkLoc("Parijs",48.86,2.35,{type:"capital",capitalOf:"Frankrijk",fact:"De Eiffeltoren wordt elke 7 jaar opnieuw geverfd — 60 ton verf!"}),
-  mkLoc("Londen",51.51,-0.13,{type:"capital",capitalOf:"VK",fact:"In Londen rijden rode dubbeldekker bussen al meer dan 60 jaar!"}),
-  mkLoc("Amsterdam",52.37,4.90,{type:"capital",capitalOf:"Nederland",fact:"Amsterdam heeft meer dan 1.500 bruggen — meer dan Venetië!"}),
-  mkLoc("Brussel",50.85,4.35,{type:"capital",capitalOf:"België",fact:"Brussel heeft meer dan 2.000 chocoladewinkels!"}),
-  mkLoc("Berlijn",52.52,13.41,{type:"capital",capitalOf:"Duitsland",fact:"Berlijn is 9x zo groot als Parijs maar heeft minder inwoners!"}),
-  mkLoc("Rome",41.90,12.50,{type:"capital",capitalOf:"Italië",fact:"Er worden elke dag €3.000 aan munten uit de Trevi-fontein gehaald!"}),
-  mkLoc("Wenen",48.21,16.37,{type:"capital",capitalOf:"Oostenrijk",fact:"Wenen werd 10 jaar op rij verkozen tot de meest leefbare stad!"}),
-  mkLoc("Praag",50.08,14.44,{type:"capital",capitalOf:"Tsjechië",fact:"De Praagse astronomische klok werkt al sinds 1410!"}),
-  mkLoc("Warschau",52.23,21.01,{type:"capital",capitalOf:"Polen",fact:"Warschau werd in WO2 bijna helemaal verwoest en toen exact herbouwd!"}),
-  mkLoc("Kopenhagen",55.68,12.57,{type:"capital",capitalOf:"Denemarken",fact:"Kopenhagen wil in 2025 de eerste CO2-neutrale hoofdstad zijn!"}),
-  mkLoc("Stockholm",59.33,18.07,{type:"capital",capitalOf:"Zweden",fact:"Stockholm heeft een metro met stations die eruitzien als grotten!"}),
-  mkLoc("Oslo",59.91,10.75,{type:"capital",capitalOf:"Noorwegen",fact:"Oslo's opera heeft een dak waar je overheen kunt lopen!"}),
-  mkLoc("Helsinki",60.17,24.94,{type:"capital",capitalOf:"Finland",fact:"Finland heeft meer sauna's dan auto's!"}),
-  mkLoc("Athene",37.98,23.73,{type:"capital",capitalOf:"Griekenland",fact:"Athene is vernoemd naar de godin Athena!"}),
-  mkLoc("Boedapest",47.50,19.04,{type:"capital",capitalOf:"Hongarije",fact:"Boedapest is eigenlijk twee steden: Buda en Pest, gescheiden door de Donau!"}),
-  mkLoc("Dublin",53.35,-6.26,{type:"capital",capitalOf:"Ierland",fact:"In Dublin is er een brug die maar 1x per dag opengaat!"}),
-  mkLoc("Bern",46.95,7.45,{type:"capital",capitalOf:"Zwitserland",fact:"Bern is vernoemd naar een beer — het wapen van de stad is ook een beer!"}),
-]}};
-
-let customSets=[];
-
-// ============================================================
-// QUESTION ENGINE
-// ============================================================
-const QTPL=[
-  {w:3,can:()=>true,gen:l=>({text:`Blaas ${l.name} op!`,ids:new Set([l.id])})},
-  {w:5,can:l=>l.tags.type==='capital'&&l.tags.capitalOf,gen:l=>({text:`Blaas de hoofdstad van ${l.tags.capitalOf} op!`,ids:new Set([l.id])})},
-  {w:3,can:l=>l.tags.type==='land',gen:l=>({text:`Waar ligt ${l.name}? Blaas het op!`,ids:new Set([l.id])})},
-  {w:3,can:l=>l.tags.type==='water',gen:l=>({text:`Blaas de ${l.name} op!`,ids:new Set([l.id])})},
-  {w:3,can:l=>l.tags.type==='gebied',gen:l=>({text:`Waar is ${l.name}? Blaas het op!`,ids:new Set([l.id])})},
-  {w:2,can:(l,a)=>l.tags.type==='land'&&a.some(x=>x.tags.capitalOf===l.name),
-   gen:(l,a)=>{const c=a.find(x=>x.tags.capitalOf===l.name);return c?{text:`Blaas de hoofdstad van ${l.name} op!`,ids:new Set([c.id])}:null}},
-];
-function genQ(locs,used){
-  const av=locs.filter(l=>!used.has(l.id));
-  if(!av.length)return null;
-  const pool=[];
-  for(const l of av)for(const t of QTPL)if(t.can(l,locs))for(let i=0;i<t.w;i++)pool.push({l,t});
-  if(!pool.length){const l=pick(av);return{text:`Blaas ${l.name} op!`,ids:new Set([l.id]),tid:l.id}}
-  for(let i=0;i<30;i++){const{l,t}=pick(pool);const q=t.gen(l,locs);if(q?.ids?.size)return{...q,tid:l.id}}
-  const l=pick(av);return{text:`Blaas ${l.name} op!`,ids:new Set([l.id]),tid:l.id}
-}
-
-// ============================================================
-// MESSAGES — way more variety
-// ============================================================
-const WRONG=[
-  c=>`Oh nee! Je hebt ${c.name} opgeblazen! Die hadden niks gedaan! 😱`,
-  c=>`OEPS! Dat was ${c.name}... RIP alle pizza's daar! 🍕💀`,
-  c=>`Mis! ${c.name} is nu een krater. De WiFi is ook weg! 📡💥`,
-  c=>`BOEM verkeerd! De mensen in ${c.name} hadden net TikTok open! 📱😤`,
-  c=>`${c.name} zegt: "Wij hadden hier niks mee te maken!" 😭`,
-  c=>`${c.name} opgeblazen! Google Maps is teleurgesteld in je! 🗺️`,
-  c=>`${c.name} bestaat niet meer! Al die leuke winkels... weg! 🛍️💨`,
-  c=>`${c.name}?! Neeee! Daar woonde nog iemands kat! 🐱💥`,
-  c=>`${c.name} is weg. De burgemeester stuurt een boze emoji! 😡`,
-  c=>`${c.name} van de kaart geveegd... Dat komt op het nieuws! 📺`,
-  c=>`Au! ${c.name} is niet blij met je! Ze sturen je de rekening! 💸`,
-  c=>`${c.name} had net een nieuw zwembad geopend... WAS een zwembad! 🏊💥`,
-  c=>`Alle huisdieren in ${c.name} zijn boos op je! 🐕🐈😾`,
-  c=>`${c.name} was net uitgeroepen tot leukste stad... tot nu! 🏆➡️💣`,
-  c=>`De ijsjes in ${c.name} zijn gesmolten van de explosie! 🍦🔥`,
-  c=>`${c.name} stuurt je een 1-ster review op Google! ⭐😤`,
-  c=>`De kinderen in ${c.name} hadden net pauze... HADDEN! 🏫💥`,
-  c=>`${c.name} is nu een meer. Oeps! 🕳️💧`,
-];
-const RIGHT=[
-  c=>`KABOOM! 💥 ${c.name} is geschiedenis! Perfect!`,
-  c=>`Direct raak! ${c.name} = weg! 🎯`,
-  c=>`${c.name} opgeblazen! Topografie-genie! 🧠`,
-  c=>`BOEM! ${c.name} bestaat niet meer! Goed gedaan! 💣`,
-  c=>`Raak! ${c.name} had geen schijn van kans! 🔥`,
-  c=>`${c.name}? PATS! Helemaal goed! 🏆`,
-  c=>`${c.name} is verdampt! Wat een schot! ☄️`,
-  c=>`Recht op ${c.name}! Je bent een raket-expert! 🚀`,
-  c=>`${c.name}: vernietigd! Je kent je kaart! 🗺️✨`,
-  c=>`DOEM! ${c.name} is een herinnering! Knap! 💪`,
-  c=>`${c.name} weggevaagd! De aardrijkskundeleraar is trots! 👩‍🏫`,
-  c=>`BOOOM! ${c.name} in één keer! Machine! 🤖`,
-];
-
-// ============================================================
-// PARTICLE SYSTEM — MEGA EXPLOSIONS
-// ============================================================
-let particles=[];
-
-function spawnBoom(x,y,s=1){
-  // Triple flash
-  particles.push({t:'flash',x,y,r:15*s,mr:250*s,a:1,life:18,age:0});
-  particles.push({t:'flash',x,y,r:5*s,mr:180*s,a:.8,life:25,age:3});
-  // Multiple shockwave rings
-  particles.push({t:'ring',x,y,r:8*s,mr:200*s,a:1,lw:5*s,life:35,age:0});
-  particles.push({t:'ring',x,y,r:3*s,mr:150*s,a:.7,lw:3*s,life:45,age:4});
-  particles.push({t:'ring',x,y,r:2*s,mr:120*s,a:.5,lw:2*s,life:55,age:8});
-  // Massive spark shower
-  const C=["#ff4400","#ff6600","#ff9900","#ffcc00","#fff","#ff2200","#ffff00","#ff8800"];
-  for(let i=0;i<120;i++){
-    const a=Math.random()*Math.PI*2,sp=(1+Math.random()*7)*s;
-    particles.push({t:'spark',x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*2*s,
-      r:(1+Math.random()*3)*s,a:1,color:pick(C),life:30+Math.random()*60,age:0,g:(.015+Math.random()*.03)*s});
-  }
-  // Fireballs
-  for(let i=0;i<40;i++){
-    const a=Math.random()*Math.PI*2,sp=(.3+Math.random()*2)*s;
-    particles.push({t:'cloud',x:x+Math.cos(a)*8*s,y:y+Math.sin(a)*8*s,
-      vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*2*s,
-      r:(6+Math.random()*16)*s,a:.8,
-      color:`hsl(${Math.random()*30},${80+Math.random()*20}%,${35+Math.random()*35}%)`,
-      life:40+Math.random()*50,age:0});
-  }
-  // Mushroom stem
-  for(let i=0;i<15;i++){
-    particles.push({t:'cloud',x:x+(Math.random()-.5)*6*s,y,
-      vx:(Math.random()-.5)*.15*s,vy:(-2-Math.random()*3)*s,
-      r:(8+Math.random()*12)*s,a:.6,
-      color:`hsl(${10+Math.random()*15},${70+Math.random()*20}%,${30+Math.random()*25}%)`,
-      life:60+Math.random()*40,age:Math.random()*10|0});
-  }
-  // Mushroom cap
-  for(let i=0;i<20;i++){
-    const spread=(Math.random()-.5)*40*s;
-    particles.push({t:'cloud',x:x+spread,y:y-60*s+(Math.random()-.5)*20*s,
-      vx:(Math.random()-.5)*.5*s,vy:(-.5-Math.random()*.5)*s,
-      r:(10+Math.random()*20)*s,a:.5,
-      color:`hsl(${5+Math.random()*20},${60+Math.random()*30}%,${40+Math.random()*30}%)`,
-      life:70+Math.random()*50,age:10+Math.random()*10|0});
-  }
-  // Hot debris
-  for(let i=0;i<25;i++){
-    const a=Math.random()*Math.PI*2,sp=(2+Math.random()*5)*s;
-    particles.push({t:'debris',x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*4*s,
-      r:(2+Math.random()*3)*s,a:1,life:50+Math.random()*40,age:0,g:(.04+Math.random()*.03)*s});
-  }
-  // Smoke column
-  for(let i=0;i<18;i++){
-    particles.push({t:'smoke',x:x+(Math.random()-.5)*10*s,y,
-      vx:(Math.random()-.5)*.3*s,vy:(-.4-Math.random()*1)*s,
-      r:(10+Math.random()*18)*s,a:.3,life:90+Math.random()*50,age:Math.random()*15|0});
-  }
-  // Ground scorch ring
-  particles.push({t:'scorch',x,y,r:5*s,mr:80*s,a:.4,life:100,age:0});
-}
-
-function tickDraw(ctx,w,h){
-  ctx.clearRect(0,0,w,h);
-  for(const p of particles){
-    p.age++;
-    if(p.delay&&p.age<p.delay)continue;
-    const pr=p.age/p.life;
-    if(p.t==='flash'){
-      const r=p.r+(p.mr-p.r)*Math.pow(pr,.5),a=p.a*(1-pr);
-      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
-      g.addColorStop(0,`rgba(255,255,255,${a})`);
-      g.addColorStop(.2,`rgba(255,220,100,${a*.8})`);
-      g.addColorStop(.5,`rgba(255,120,20,${a*.4})`);
-      g.addColorStop(1,'rgba(255,50,0,0)');
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
-    }else if(p.t==='ring'){
-      const r=p.r+(p.mr-p.r)*pr,a=p.a*(1-pr);
-      ctx.strokeStyle=`rgba(255,${180+pr*75|0},${pr*150|0},${a})`;
-      ctx.lineWidth=p.lw*(1-pr*.7);
-      ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.stroke();
-    }else if(p.t==='spark'){
-      p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.985;
-      const a=p.a*(1-pr);
-      ctx.globalAlpha=a;ctx.fillStyle=p.color;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*(1-pr*.6),0,Math.PI*2);ctx.fill();
-      // spark trail
-      ctx.globalAlpha=a*.3;
-      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*3,p.y-p.vy*3);
-      ctx.strokeStyle=p.color;ctx.lineWidth=p.r*(1-pr*.6)*.5;ctx.stroke();
-      ctx.globalAlpha=1;
-    }else if(p.t==='debris'){
-      p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.97;
-      ctx.globalAlpha=p.a*(1-pr);
-      ctx.fillStyle=pr<.3?'#ffcc00':pr<.6?'#ff6600':'#884422';
-      ctx.fillRect(p.x-p.r/2,p.y-p.r/2,p.r,p.r);
-      ctx.globalAlpha=1;
-    }else if(p.t==='cloud'){
-      p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.vy*=.98;
-      ctx.globalAlpha=p.a*(1-Math.pow(pr,.7));
-      ctx.fillStyle=p.color;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*(.4+pr*.8),0,Math.PI*2);ctx.fill();
-      ctx.globalAlpha=1;
-    }else if(p.t==='smoke'){
-      p.x+=p.vx;p.y+=p.vy;
-      ctx.globalAlpha=p.a*(1-pr);
-      ctx.fillStyle=`rgba(60,40,30,1)`;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*(.5+pr*.8),0,Math.PI*2);ctx.fill();
-      ctx.globalAlpha=1;
-    }else if(p.t==='scorch'){
-      const r=p.r+(p.mr-p.r)*Math.min(pr*3,1);
-      ctx.globalAlpha=p.a*(1-pr);
-      ctx.fillStyle='rgba(40,20,0,1)';
-      ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
-      ctx.globalAlpha=1;
-    }
-  }
-  particles=particles.filter(p=>p.age<p.life);
-}
-
-// ============================================================
-// SCREENS
-// ============================================================
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(id==='menu')renderMenu();
-}
-
-function renderMenu(){
-  const h=document.getElementById('hw-sets'),e=document.getElementById('extra-sets'),c=document.getElementById('custom-sets');
-  h.innerHTML='';e.innerHTML='';c.innerHTML='';
-  for(const[k,s]of Object.entries(HOMEWORK))h.appendChild(mkCard(s,()=>startGame(s)));
-  for(const[k,s]of Object.entries(EXTRAS))e.appendChild(mkCard(s,()=>startGame(s)));
-  if(!customSets.length)c.innerHTML='<div style="color:#44ff8833;font-size:11px;margin-bottom:10px">Nog geen eigen sets</div>';
-  customSets.forEach((s,i)=>c.appendChild(mkCard(s,()=>startGame(s))));
-}
-
-function mkCard(set,onPlay){
-  const d=document.createElement('div');d.className='set-card';
-  d.innerHTML=`<div class="info"><div class="name">${set.hw?'📚 ':''}${set.label}</div><div class="meta">${set.description} · ${set.locations.length} locaties</div></div><button class="play-btn">▶</button>`;
-  d.querySelector('.play-btn').onclick=e=>{e.stopPropagation();onPlay()};d.onclick=onPlay;return d;
-}
-
-// ============================================================
-// GAME
-// ============================================================
-let map=null,GS=null,markers={},boomAnim=null,boomCanvas,boomCtx,msgTimeout=null;
-let isMobile=window.innerWidth<640;
-window.addEventListener('resize',()=>{isMobile=window.innerWidth<640;updateHudLayout()});
-
-function startGame(dataset){
-  showScreen('game');
-  GS={locs:dataset.locations,totalQ:Math.min(dataset.locations.length,15),
-    round:0,score:0,streak:0,best:0,used:new Set(),question:null,busy:false,retrying:false,lastDataset:dataset};
-
-  const mapEl=document.getElementById('map');
-  if(map){map.remove();map=null}
-  map=L.map(mapEl,{zoomControl:false,attributionControl:true,dragging:true,touchZoom:true,scrollWheelZoom:true,doubleClickZoom:false,boxZoom:false});
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',{
-    attribution:'©OSM ©CARTO',subdomains:'abcd',maxZoom:10,minZoom:3}).addTo(map);
-  L.rectangle([[-90,-180],[90,180]],{fillColor:'#44ff88',fillOpacity:0.03,stroke:false,interactive:false}).addTo(map);
-
-  GS.defaultBounds=L.latLngBounds(GS.locs.map(l=>[l.lat,l.lng])).pad(0.15);
-  map.fitBounds(GS.defaultBounds);
-
-  markers={};
-  for(const loc of GS.locs){
-    const type=loc.tags.type||'city';
-    const icon=L.divIcon({className:'',html:`<div class="nuke-marker ${type}" data-id="${loc.id}"><div class="dot"></div></div>`,iconSize:[0,0],iconAnchor:[0,0]});
-    const m=L.marker([loc.lat,loc.lng],{icon,interactive:true}).addTo(map);
-    m.on('click',()=>handleClick(loc));
-    markers[loc.id]=m;
-  }
-
-  // canvas
-  boomCanvas=document.getElementById('boom-canvas');
-  const wrap=document.getElementById('map-wrap');
-  setupCanvas(wrap);
-  const ro=new ResizeObserver(()=>setupCanvas(wrap));
-  ro.observe(wrap);GS._ro=ro;
-
-  if(boomAnim)cancelAnimationFrame(boomAnim);
-  particles=[];
-  (function loop(){tickDraw(boomCtx,wrap.clientWidth,wrap.clientHeight);boomAnim=requestAnimationFrame(loop)})();
-
-  nextQ();
-}
-
-function setupCanvas(wrap){
-  const dpr=window.devicePixelRatio||1;
-  boomCanvas.width=wrap.clientWidth*dpr;boomCanvas.height=wrap.clientHeight*dpr;
-  boomCanvas.style.width=wrap.clientWidth+'px';boomCanvas.style.height=wrap.clientHeight+'px';
-  boomCtx=boomCanvas.getContext('2d');boomCtx.setTransform(dpr,0,0,dpr,0,0);
-}
-
-function resetMarkers(){
-  for(const loc of GS.locs){
-    const el=document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
-    if(el){el.classList.remove('nuked','highlight');const lbl=el.querySelector('.label');if(lbl)lbl.remove()}
-  }
-}
-
-function nextQ(){
-  if(GS.round>=GS.totalQ){endGame();return}
-  resetMarkers();
-  // reset view to default bounds
-  map.flyToBounds(GS.defaultBounds,{duration:.5,padding:[20,20]});
-  const q=genQ(GS.locs,GS.used);
-  if(!q){endGame();return}
-  GS.question=q;GS.busy=false;GS.retrying=false;
-  updateHUD();hideToast();
-}
-
-function handleClick(loc){
-  if(!GS||GS.busy||!GS.question)return;
-  // during retry, only accept the correct answer
-  if(GS.retrying){
-    if(!GS.question.ids.has(loc.id))return;
-    // correct on retry!
-    GS.busy=true;
-    const pt=map.latLngToContainerPoint([loc.lat,loc.lng]);
-    spawnBoom(pt.x,pt.y,isMobile?.9:1.2);
-    doFlash();doShake();
-    // mark as nuked
-    const el=document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
-    if(el){el.classList.remove('highlight');el.classList.add('nuked');const lbl=document.createElement('div');lbl.className='label';lbl.textContent=loc.name;el.insertBefore(lbl,el.firstChild)}
-    showToast(`Goed zo! Nu weet je het! ${loc.name}! ✅`,null,'correct');
-    GS.used.add(GS.question.tid);GS.round++;updateHUD();
-    clearTimeout(msgTimeout);
-    msgTimeout=setTimeout(()=>nextQ(),2500);
-    return;
-  }
-
-  GS.busy=true;
-  const pt=map.latLngToContainerPoint([loc.lat,loc.lng]);
-  spawnBoom(pt.x,pt.y,isMobile?.9:1.2);
-  doFlash();doShake();
-
-  const correct=GS.question.ids.has(loc.id);
-
-  // nuked visual
-  const el=document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
-  if(el){el.classList.add('nuked');const lbl=document.createElement('div');lbl.className='label';lbl.textContent=loc.name;el.insertBefore(lbl,el.firstChild)}
-
-  if(correct){
-    GS.score+=100+GS.streak*25;GS.streak++;
-    if(GS.streak>GS.best)GS.best=GS.streak;
-    const fact=loc.tags.fact;
-    showToast(pick(RIGHT)(loc),fact,'correct');
-    GS.used.add(GS.question.tid);GS.round++;updateHUD();
-    clearTimeout(msgTimeout);
-    msgTimeout=setTimeout(()=>nextQ(),3000);
-  }else{
-    GS.streak=0;
-    // find the correct answer location
-    const correctLoc=GS.locs.find(l=>GS.question.ids.has(l.id));
-    const fact=correctLoc?correctLoc.tags.fact:null;
-    showToast(pick(WRONG)(loc),fact,'wrong');
-    updateHUD();
-    // after showing wrong message, highlight correct answer and zoom in
-    clearTimeout(msgTimeout);
-    msgTimeout=setTimeout(()=>{
-      if(!GS||!correctLoc)return;
-      const correctEl=document.querySelector(`.nuke-marker[data-id="${correctLoc.id}"]`);
-      if(correctEl){
-        correctEl.classList.add('highlight');
-        const lbl=document.createElement('div');lbl.className='label';lbl.textContent=correctLoc.name;
-        correctEl.insertBefore(lbl,correctEl.firstChild);
-      }
-      // zoom to correct location
-      map.flyTo([correctLoc.lat,correctLoc.lng],6,{duration:.8});
-      // show hint with fact
-      const hint=`👆 Dat is ${correctLoc.name}! Tik erop om verder te gaan.`;
-      showToast(hint,fact,'correct');
-      // enable retry mode
-      GS.retrying=true;GS.busy=false;
-    },8000);
-  }
-}
-
-function updateHUD(){
-  if(!GS)return;
-  document.getElementById('hud-round').textContent=`☢ ${Math.min(GS.round+1,GS.totalQ)}/${GS.totalQ}`;
-  document.getElementById('hud-score').textContent=GS.score;
-  document.getElementById('hud-streak').textContent=GS.streak>1?GS.streak+'x':'';
-  const t=GS.question?`💣 ${GS.question.text}`:'...';
-  document.getElementById('hud-qm').textContent=t;
-  document.getElementById('hud-qd').textContent=t;
-}
-
-function showToast(msg,fact,type){
-  const t=document.getElementById('toast');
-  t.innerHTML=msg+(fact?`<span class="fact">💡 ${fact}</span>`:'');
-  t.className=type;t.style.display='block';
-  t.style.animation='none';t.offsetHeight;t.style.animation='pop .3s ease-out';
-}
-function hideToast(){document.getElementById('toast').style.display='none'}
-
-function doFlash(){
-  const f=document.getElementById('flash-overlay');
-  f.style.display='block';f.style.opacity='0.7';
-  setTimeout(()=>{f.style.opacity='0.3'},60);
-  setTimeout(()=>f.style.display='none',180);
-}
-function doShake(){
-  const el=document.getElementById('map-wrap');let c=0;
-  const iv=setInterval(()=>{
-    const intensity=8*(1-c/10);
-    el.style.transform=`translate(${(Math.random()-.5)*intensity}px,${(Math.random()-.5)*intensity}px)`;
-    if(++c>10){clearInterval(iv);el.style.transform=''}
-  },40);
-}
-
-function endGame(){
-  if(boomAnim)cancelAnimationFrame(boomAnim);
-  if(GS?._ro)GS._ro.disconnect();
-  if(map){map.remove();map=null}
-  const s=GS,mx=s.totalQ*100+(s.totalQ*(s.totalQ-1)/2)*25;
-  const pct=Math.round((s.score/mx)*100);
-  const grade=pct>=90?'GENERAAL':pct>=70?'KOLONEL':pct>=50?'SERGEANT':pct>=30?'KORPORAAL':'REKRUUT';
-  const gc=pct>=70?'#44ff88':pct>=40?'#ffaa00':'#ff4400';
-  document.getElementById('res-score').textContent=s.score;
-  document.getElementById('res-streak').textContent=s.best+'x';
-  document.getElementById('res-rank').textContent=grade;
-  document.getElementById('res-rank').style.color=gc;
-  const rb=document.getElementById('res-rank-box');rb.style.border=`2px solid ${gc}`;rb.style.background=gc+'11';
-  showScreen('results');
-}
-
-function exitGame(){
-  clearTimeout(msgTimeout);
-  if(boomAnim)cancelAnimationFrame(boomAnim);
-  if(GS?._ro)GS._ro.disconnect();
-  if(map){map.remove();map=null}
-  GS=null;showScreen('menu');
-}
-
-function restartGame(){
-  if(!GS){showScreen('menu');return}
-  startGame(GS.lastDataset);
-}
-
-// ============================================================
-// EDITOR
-// ============================================================
-let editorLocs=[];
-
-function showEditor(){
-  editorLocs=[];
-  document.getElementById('ed-name').value='Mijn Set';
-  ['ed-loc-name','ed-loc-lat','ed-loc-lng','ed-loc-of','ed-loc-fact'].forEach(id=>document.getElementById(id).value='');
-  renderEdList();showScreen('editor');
-}
-
-function editorAddLoc(){
-  const n=document.getElementById('ed-loc-name').value.trim(),
-    la=document.getElementById('ed-loc-lat').value,
-    ln=document.getElementById('ed-loc-lng').value,
-    tp=document.getElementById('ed-loc-type').value,
-    of_=document.getElementById('ed-loc-of').value.trim(),
-    fact=document.getElementById('ed-loc-fact').value.trim();
-  if(!n||!la||!ln)return;
-  const tags={type:tp};if(of_)tags.capitalOf=of_;if(fact)tags.fact=fact;
-  editorLocs.push(mkLoc(n,la,ln,tags));
-  ['ed-loc-name','ed-loc-lat','ed-loc-lng','ed-loc-of','ed-loc-fact'].forEach(id=>document.getElementById(id).value='');
-  renderEdList();
-}
-
-function renderEdList(){
-  const list=document.getElementById('ed-list');
-  document.getElementById('ed-count').textContent=editorLocs.length;
-  list.innerHTML='';
-  if(!editorLocs.length)list.innerHTML='<div style="color:#44ff8844;font-size:12px;padding:12px;text-align:center">Voeg locaties toe of importeer JSON</div>';
-  for(const l of editorLocs){
-    const d=document.createElement('div');d.className='loc-item';
-    const ts=Object.entries(l.tags).filter(([,v])=>v).map(([k,v])=>`${k}:${v}`).join(' · ');
-    d.innerHTML=`<span class="loc-name">${l.name}</span><span class="loc-tags">${ts}</span>`;
-    const btn=document.createElement('button');btn.className='loc-del';btn.textContent='✕';
-    btn.onclick=()=>{editorLocs=editorLocs.filter(x=>x.id!==l.id);renderEdList()};
-    d.appendChild(btn);list.appendChild(d);
-  }
-  const sb=document.getElementById('ed-save');sb.disabled=editorLocs.length<3;
-  sb.textContent=`💾 OPSLAAN (${editorLocs.length})`;
-  document.getElementById('ed-warn').style.display=(editorLocs.length>0&&editorLocs.length<3)?'block':'none';
-}
-
-function toggleJsonImport(){const el=document.getElementById('json-import');el.style.display=el.style.display==='none'?'block':'none'}
-
-function editorImportJson(){
-  try{
-    const data=JSON.parse(document.getElementById('ed-json').value);
-    const arr=(Array.isArray(data)?data:data.locations||[]);
-    if(!arr.length)throw new Error('Geen locaties gevonden');
-    for(const d of arr)editorLocs.push(mkLoc(d.name,d.lat,d.lng,d.tags||{}));
-    document.getElementById('json-import').style.display='none';
-    document.getElementById('ed-json').value='';
-    document.getElementById('json-err').style.display='none';
-    renderEdList();
-  }catch(e){document.getElementById('json-err').textContent=e.message;document.getElementById('json-err').style.display='block'}
-}
-
-function editorSave(){
-  if(editorLocs.length<3)return;
-  const label=document.getElementById('ed-name').value.trim()||'Mijn Set';
-  customSets.push({label,description:`${editorLocs.length} locaties`,locations:[...editorLocs]});
-  showScreen('menu');
-}
-
-// ============================================================
-// RESPONSIVE HUD
-// ============================================================
-function updateHudLayout(){
-  const m=window.innerWidth<640;
-  document.getElementById('hud-qm').style.display=m?'block':'none';
-  document.getElementById('hud-qd').style.display=m?'none':'block';
-}
-updateHudLayout();
-renderMenu();
-</script>
+<script src="js/i18n.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/data.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/highscores.js"></script>
+<script src="js/game.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
