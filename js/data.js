@@ -11,8 +11,8 @@ const HOMEWORK = {
       // Positions matched to textbook map (tegel1.jpg)
       // 1. Noordpoolcirkel (Bijzonderheid/lijn) - line across northern Canada/Scandinavia/Russia
       mkLoc("Noordpoolcirkel", 66.5, 60.0, { type: "bijzonderheid", fact: "Boven de Noordpoolcirkel gaat de zon in de zomer soms wekenlang niet onder!" }),
-      // 2. Indische Oceaan (Water/waves) - waves between Africa and Australia
-      mkLoc("Indische Oceaan", -20.0, 75.0, { type: "water", fact: "De Indische Oceaan is de warmste oceaan van de wereld!" }),
+      // 2. Indische Oceaan (Water/waves) - waves just south of the equator, between Africa and Australia
+      mkLoc("Indische Oceaan", -8.0, 75.0, { type: "water", fact: "De Indische Oceaan is de warmste oceaan van de wereld!" }),
       // 3. Zuid-Amerika (Gebied/flag) - flag on South America
       mkLoc("Zuid-Amerika", -15.0, -60.0, { type: "gebied", fact: "In Zuid-Amerika ligt de Amazone, het grootste regenwoud ter wereld!" }),
       // 4. Azie (Gebied/flag) - flag on Asia
@@ -25,18 +25,18 @@ const HOMEWORK = {
       mkLoc("Antarctica", -80.0, 20.0, { type: "gebied", fact: "In Antarctica ligt 90% van al het ijs op aarde!" }),
       // 8. Evenaar (Bijzonderheid/lijn) - line through Africa/South America/Asia
       mkLoc("Evenaar", 0.0, 20.0, { type: "bijzonderheid", fact: "Op de evenaar duren dag en nacht altijd precies 12 uur!" }),
-      // 9. Afrika (Gebied/flag) - flag on Africa
-      mkLoc("Afrika", 5.0, 20.0, { type: "gebied", fact: "Afrika is het enige continent dat in alle vier de windrichtingen door de evenaar en beide keerkringen wordt gesneden!" }),
+      // 9. Afrika (Gebied/flag) - flag in northern Africa (Sahara), above the equator line
+      mkLoc("Afrika", 18.0, 20.0, { type: "gebied", fact: "Afrika is het enige continent dat in alle vier de windrichtingen door de evenaar en beide keerkringen wordt gesneden!" }),
       // 10. Noord-Amerika (Gebied/flag) - flag on North America
       mkLoc("Noord-Amerika", 45.0, -100.0, { type: "gebied", fact: "In Noord-Amerika ligt de Grand Canyon, die wel 1,6 km diep is!" }),
-      // 11. Atlantische Oceaan (Water/waves) - waves between Americas and Europe/Africa
-      mkLoc("Atlantische Oceaan", 10.0, -40.0, { type: "water", fact: "De Atlantische Oceaan wordt elk jaar een paar centimeter breder!" }),
+      // 11. Atlantische Oceaan (Water/waves) - waves in the Caribbean, between North and South America
+      mkLoc("Atlantische Oceaan", 18.0, -70.0, { type: "water", fact: "De Atlantische Oceaan wordt elk jaar een paar centimeter breder!" }),
       // 12. Zuidpoolcirkel (Bijzonderheid/lijn) - line around Antarctica
       mkLoc("Zuidpoolcirkel", -66.5, 0.0, { type: "bijzonderheid", fact: "Onder de Zuidpoolcirkel is het 's winters wekenlang aaneengesloten donker!" }),
       // 13. Noordelijke IJszee (Water/waves) - waves at the top over the north pole
       mkLoc("Noordelijke IJszee", 85.0, 20.0, { type: "water", fact: "De Noordelijke IJszee is de kleinste en ondiepste oceaan ter wereld!" }),
-      // 14. Oceanie (Gebied/flag) - flag on Australia/Oceania
-      mkLoc("Oceanie", -25.0, 135.0, { type: "gebied", fact: "Oceanie bestaat uit Australie en duizenden kleine eilanden in de Grote Oceaan!" }),
+      // 14. Oceanie (Gebied/flag) - flag on islands east of Australia (between Australia and New Zealand)
+      mkLoc("Oceanie", -20.0, 165.0, { type: "gebied", fact: "Oceanie bestaat uit Australie en duizenden kleine eilanden in de Grote Oceaan!" }),
     ]
   },
   "tegel7": {
