@@ -20,7 +20,7 @@ function startGame(dataset) {
     touchZoom: true, scrollWheelZoom: true, doubleClickZoom: false, boxZoom: false
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png?api_key=cb1_3nxu_1_37aa0b0a1afa1e7250a65dc6', {
     attribution: '&copy;OSM &copy;CARTO', subdomains: 'abcd', maxZoom: 10, minZoom: 3
   }).addTo(map);
   L.rectangle([[-90, -180], [90, 180]], { fillColor: '#66ccff', fillOpacity: 0.03, stroke: false, interactive: false }).addTo(map);
