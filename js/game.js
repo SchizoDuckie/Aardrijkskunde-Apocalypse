@@ -260,7 +260,9 @@ function updateHUD() {
   if (!GS) return;
   document.getElementById('hud-round').textContent = `☢ ${Math.min(GS.round + 1, GS.totalQ)}/${GS.totalQ}`;
   document.getElementById('hud-score').textContent = GS.score;
-  document.getElementById('hud-streak').textContent = GS.streak > 1 ? GS.streak + 'x' : '';
+  const streakEl = document.getElementById('hud-streak');
+  streakEl.textContent = GS.streak > 1 ? GS.streak + 'x' : '';
+  streakEl.classList.toggle('fire', GS.streak >= 3);
   const t = GS.question ? `💣 ${GS.question.text}` : '...';
   document.getElementById('hud-qm').textContent = t;
   document.getElementById('hud-qd').textContent = t;
@@ -337,6 +339,7 @@ function endGame() {
   }
 
   showScreen('results');
+  if (pct >= 70) startFireworks(pct >= 90 ? 10 : 6);
 }
 
 function submitHighscore() {

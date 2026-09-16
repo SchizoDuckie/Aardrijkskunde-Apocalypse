@@ -4,7 +4,8 @@
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (id === 'menu') renderMenu();
+  if (id === 'menu') { renderMenu(); initStarfield() } else { stopStarfield() }
+  if (id !== 'results') stopFireworks();
 }
 
 function renderMenu() {
@@ -53,3 +54,4 @@ function onToggleLang() {
 // Init
 updateHudLayout();
 renderMenu();
+initStarfield();
