@@ -90,6 +90,8 @@ function nextQ() {
 function handleClick(loc) {
   if (!GS || GS.busy || !GS.question) return;
 
+  const food = T().fx === 'food';
+
   // during retry, only accept the correct answer
   if (GS.retrying) {
     if (!GS.question.ids.has(loc.id)) return;
@@ -97,18 +99,24 @@ function handleClick(loc) {
     const pt = map.latLngToContainerPoint([loc.lat, loc.lng]);
     const wrap = document.getElementById('map-wrap');
     launchMissile(pt.x, pt.y, wrap, () => {
-      spawnMegaBoom(pt.x, pt.y, wrap.clientWidth, wrap.clientHeight);
-      soundMegaBoom();
-      doFlash(); doMegaShake();
+      if (food) {
+        spawnFoodParty(pt.x, pt.y, wrap.clientWidth, wrap.clientHeight, loc.tags.emoji);
+        soundDelivered(); doShake();
+      } else {
+        spawnMegaBoom(pt.x, pt.y, wrap.clientWidth, wrap.clientHeight);
+        soundMegaBoom();
+        doFlash(); doMegaShake();
+      }
     });
     soundMissileIncoming();
     const el = document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
     if (el) {
       el.classList.remove('highlight'); el.classList.add('nuked');
+      if (food) { el.classList.add('food'); el.dataset.emoji = loc.tags.emoji || '📦' }
       const lbl = document.createElement('div'); lbl.className = 'label'; lbl.textContent = loc.name;
       el.insertBefore(lbl, el.firstChild);
     }
-    showToast(`${T().retryCorrect(loc)}`, null, 'correct');
+    showToast(`${T().retryCorrect(loc)}`, food ? factOf(loc) : null, 'correct');
     GS.used.add(GS.question.tid); GS.round++; updateHUD();
     clearTimeout(msgTimeout);
     msgTimeout = setTimeout(() => nextQ(), 4000);
@@ -118,9 +126,18 @@ function handleClick(loc) {
   GS.busy = true;
   const pt = map.latLngToContainerPoint([loc.lat, loc.lng]);
   const correct = GS.question.ids.has(loc.id);
+  const correctLoc = GS.locs.find(l => GS.question.ids.has(l.id));
   const wrap = document.getElementById('map-wrap');
+  // the dish that was ordered lands wherever was clicked
+  const emoji = correctLoc?.tags.emoji || '📦';
 
-  if (correct) {
+  if (correct && food) {
+    launchMissile(pt.x, pt.y, wrap, () => {
+      spawnFoodParty(pt.x, pt.y, wrap.clientWidth, wrap.clientHeight, emoji);
+      soundDelivered(); doShake();
+    });
+    soundMissileIncoming();
+  } else if (correct) {
     // MEGA EXPLOSION with missile from space!
     launchMissile(pt.x, pt.y, wrap, () => {
       spawnMegaBoom(pt.x, pt.y, wrap.clientWidth, wrap.clientHeight);
@@ -128,6 +145,12 @@ function handleClick(loc) {
       doFlash(); doMegaShake();
     });
     soundMissileIncoming();
+  } else if (food) {
+    // dropped the order on the wrong doorstep + fart
+    spawnSplat(pt.x, pt.y, isMobile ? .9 : 1.2, emoji);
+    soundSplat();
+    setTimeout(() => soundFart(), 300);
+    doShake();
   } else {
     // Small boom for wrong + fart
     spawnBoom(pt.x, pt.y, isMobile ? .9 : 1.2);
@@ -140,6 +163,7 @@ function handleClick(loc) {
   const el = document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
   if (el) {
     el.classList.add('nuked');
+    if (food) { el.classList.add('food'); el.dataset.emoji = emoji }
     const lbl = document.createElement('div'); lbl.className = 'label'; lbl.textContent = loc.name;
     el.insertBefore(lbl, el.firstChild);
   }
@@ -148,16 +172,14 @@ function handleClick(loc) {
     GS.score += 100 + GS.streak * 25; GS.streak++;
     if (GS.streak > GS.best) GS.best = GS.streak;
     if (GS.streak > 1) soundStreak(GS.streak);
-    const fact = loc.tags.fact;
-    showToast(pick(T().right)(loc), fact, 'correct');
+    showToast(pick(T().right)(loc), factOf(loc), 'correct');
     GS.used.add(GS.question.tid); GS.round++; updateHUD();
     clearTimeout(msgTimeout);
     msgTimeout = setTimeout(() => nextQ(), 5000);
   } else {
     GS.streak = 0;
-    const correctLoc = GS.locs.find(l => GS.question.ids.has(l.id));
-    const fact = correctLoc ? correctLoc.tags.fact : null;
-    showToast(pick(T().wrong)(loc), fact, 'wrong');
+    const fact = correctLoc ? factOf(correctLoc) : null;
+    showToast(pick(T().wrong)(loc, correctLoc || loc), fact, 'wrong');
     updateHUD();
     clearTimeout(msgTimeout);
     msgTimeout = setTimeout(() => {
@@ -175,14 +197,23 @@ function handleClick(loc) {
   }
 }
 
+// Fact for the toast; themed sets with dishes also explain what the dish is
+function factOf(loc) {
+  const fact = loc.tags.fact || '';
+  if (T().fx !== 'food') return fact || null;
+  const info = currentLang === 'en' ? loc.tags.dishInfoEn : loc.tags.dishInfo;
+  if (!info) return fact || null;
+  return (fact ? fact + '<br>' : '') + `${loc.tags.emoji || '🍽'} ${info}`;
+}
+
 // ============================================================
 // MISSILE FROM SPACE
 // ============================================================
 function launchMissile(targetX, targetY, wrap, onImpact) {
   const layer = document.getElementById('missile-layer');
   const missile = document.createElement('div');
-  missile.className = 'missile';
-  missile.textContent = '🚀';
+  missile.className = 'missile' + (T().fx === 'food' ? ' drone' : '');
+  missile.textContent = T().projectile || '🚀';
   const startX = targetX + (Math.random() - 0.5) * 100;
   const startY = -80;
   missile.style.left = startX + 'px';
@@ -195,6 +226,7 @@ function launchMissile(targetX, targetY, wrap, onImpact) {
   trail.style.left = (startX + 28) + 'px';
   trail.style.top = '-200px';
   trail.style.height = '200px';
+  if (T().fx === 'food') trail.style.display = 'none';
   layer.appendChild(trail);
 
   const duration = 600;
@@ -258,12 +290,12 @@ function doMegaShake() {
 // ============================================================
 function updateHUD() {
   if (!GS) return;
-  document.getElementById('hud-round').textContent = `☢ ${Math.min(GS.round + 1, GS.totalQ)}/${GS.totalQ}`;
+  document.getElementById('hud-round').textContent = `${T().roundIcon || '☢'} ${Math.min(GS.round + 1, GS.totalQ)}/${GS.totalQ}`;
   document.getElementById('hud-score').textContent = GS.score;
   const streakEl = document.getElementById('hud-streak');
   streakEl.textContent = GS.streak > 1 ? GS.streak + 'x' : '';
   streakEl.classList.toggle('fire', GS.streak >= 3);
-  const t = GS.question ? `💣 ${GS.question.text}` : '...';
+  const t = GS.question ? `${T().qIcon || '💣'} ${GS.question.text}` : '...';
   document.getElementById('hud-qm').textContent = t;
   document.getElementById('hud-qd').textContent = t;
 }

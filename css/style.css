@@ -235,6 +235,7 @@ body { height: 100dvh }
 .nuke-marker.nuked .dot::before { color: #ff440044 !important }
 .nuke-marker.nuked .label { color: #ff440066 !important; text-decoration: line-through }
 .nuke-marker.nuked::before { content: '\2715'; color: #ff4400aa; font-size: 18px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; pointer-events: none }
+.nuke-marker.nuked.food::before { content: attr(data-emoji); color: initial; font-size: 20px }
 
 /* Highlight state (correct answer reveal) */
 .nuke-marker.highlight .dot { background: var(--g) !important; border-color: var(--g) !important; color: var(--g) !important; box-shadow: 0 0 20px var(--g), 0 0 40px #44ff8888, 0 0 60px #44ff8844 }
@@ -248,6 +249,8 @@ body { height: 100dvh }
   animation: missileShake .1s infinite alternate;
   z-index: 802;
 }
+.missile.drone { filter: drop-shadow(0 0 12px #ffcc33) drop-shadow(0 0 24px #66ccff); animation: droneWobble .25s infinite alternate }
+@keyframes droneWobble { from { transform: rotate(-8deg) } to { transform: rotate(8deg) } }
 .missile-trail {
   position: absolute; width: 8px; border-radius: 4px;
   background: linear-gradient(to bottom, transparent, #ff6600, #ff990088, transparent);

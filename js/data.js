@@ -40,50 +40,51 @@ const HOMEWORK = {
     ]
   },
   "tegel2": {
-    label: "Groep 8 tegel 2: Het Midden-Oosten", description: "Landen, hoofdsteden, zeeen en gebieden", hw: true, locations: [
+    label: "Groep 8 tegel 2: Het Midden-Oosten", description: "Landen, hoofdsteden, zeeen en gebieden", hw: true, theme: "bezorg", locations: [
       // Positions matched to textbook map (groep8-tegel2.jpg)
       // Cities/capitals use real coordinates; other markers were measured on the photo and
       // converted to lat/lng with a projection fit on 17 control points (cities + coastline).
       // 1. Mekka (Plaats/dot) - near the Red Sea coast
-      mkLoc("Mekka", 21.42, 39.83, { type: "city", fact: "Elk jaar komen er meer dan 2 miljoen pelgrims naar Mekka voor de hadj!" }),
+      mkLoc("Mekka", 21.42, 39.83, { type: "city", dish: "een doos verse dadels", dishEn: "a box of fresh dates", emoji: "🌴", dishInfo: "Dadels zijn zoete vruchten van de dadelpalm. In Saudi-Arabie eet je ze bij elk bezoek!", dishInfoEn: "Dates are sweet fruits from the date palm. In Saudi Arabia they're served at every visit!", fact: "Elk jaar komen er meer dan 2 miljoen pelgrims naar Mekka voor de hadj!" }),
       // 2. Dubai (Plaats/dot) - on the Gulf coast of the Emirates
-      mkLoc("Dubai", 25.20, 55.27, { type: "city", fact: "In Dubai staat de Burj Khalifa, met 828 meter het hoogste gebouw ter wereld!" }),
+      mkLoc("Dubai", 25.20, 55.27, { type: "city", dish: "een reep Dubai-chocolade", dishEn: "a bar of Dubai chocolate", emoji: "🍫", dishInfo: "Dubai-chocolade is chocola gevuld met pistache en knapperige deegdraadjes. Hij ging viraal op TikTok!", dishInfoEn: "Dubai chocolate is filled with pistachio and crunchy pastry threads. It went viral on TikTok!", fact: "In Dubai staat de Burj Khalifa, met 828 meter het hoogste gebouw ter wereld!" }),
       // 3. Irak (Land/triangle) - western Iraq
-      mkLoc("Irak", 33.93, 41.94, { type: "land", fact: "In Irak lag Mesopotamie, waar 5000 jaar geleden het schrift werd uitgevonden!" }),
+      mkLoc("Irak", 33.93, 41.94, { type: "land", dish: "een masgouf-vis", dishEn: "a masgouf fish", emoji: "🐟", dishInfo: "Masgouf is een hele vis uit de Tigris, opengesneden en urenlang naast een houtvuur gegrild. Het nationale gerecht van Irak!", dishInfoEn: "Masgouf is a whole fish from the Tigris, cut open and grilled for hours next to a wood fire. Iraq's national dish!", fact: "In Irak lag Mesopotamie, waar 5000 jaar geleden het schrift werd uitgevonden!" }),
       // 4. Turkije (Land/triangle) - central Anatolia, below Ankara
-      mkLoc("Turkije", 38.77, 33.69, { type: "land", fact: "Turkije ligt voor 97% in Azie en voor 3% in Europa!" }),
+      mkLoc("Turkije", 38.77, 33.69, { type: "land", dish: "een doos Turks fruit", dishEn: "a box of Turkish delight", emoji: "🍬", dishInfo: "Turks fruit (lokum) is een zacht, taai snoepje met poedersuiker. Het bestaat al meer dan 200 jaar!", dishInfoEn: "Turkish delight (lokum) is a soft, chewy sweet covered in powdered sugar. It's over 200 years old!", fact: "Turkije ligt voor 97% in Azie en voor 3% in Europa!" }),
       // 5. Saudi-Arabie (Land/triangle) - western Saudi-Arabia
-      mkLoc("Saudi-Arabië", 25.47, 40.80, { type: "land", fact: "Saudi-Arabie is meer dan 50 keer zo groot als Nederland en heeft geen enkele rivier!" }),
+      mkLoc("Saudi-Arabië", 25.47, 40.80, { type: "land", dish: "een pan kabsa", dishEn: "a pot of kabsa", emoji: "🍗", dishInfo: "Kabsa is rijst met kip en veel kruiden, het nationale gerecht van Saudi-Arabie. Je eet het van een grote schaal met z'n allen!", dishInfoEn: "Kabsa is rice with chicken and lots of spices, Saudi Arabia's national dish. Everyone eats from one big platter!", fact: "Saudi-Arabie is meer dan 50 keer zo groot als Nederland en heeft geen enkele rivier!" }),
       // 6. Israel (Land/triangle) - just south of Jerusalem
-      mkLoc("Israël", 31.07, 34.91, { type: "land", fact: "In Israel ligt de Dode Zee, het laagste punt op land: 430 meter onder zeeniveau!" }),
-      // 7. Bosporus (Zee/waves) - strait at Istanbul
-      mkLoc("Bosporus", 41.10, 29.06, { type: "water", fact: "De Bosporus is op het smalste punt maar 700 meter breed en scheidt Europa van Azie!" }),
+      mkLoc("Israël", 31.07, 34.91, { type: "land", dish: "een bak hummus", dishEn: "a tub of hummus", emoji: "🥣", dishInfo: "Hummus is een smeuige dip van gepureerde kikkererwten met sesampasta. Je dipt er brood in!", dishInfoEn: "Hummus is a creamy dip of mashed chickpeas and sesame paste. You dip bread in it!", fact: "In Israel ligt de Dode Zee, het laagste punt op land: 430 meter onder zeeniveau!" }),
+      // 7. Bosporus (Zee/waves) - strait at Istanbul; marker sits in the Black Sea just above the
+      // northern mouth, because at game zoom the strait itself is hidden under the Istanbul dot
+      mkLoc("Bosporus", 41.75, 29.40, { type: "water", dish: "een balik ekmek", dishEn: "a balik ekmek", emoji: "🥪", dishInfo: "Balik ekmek betekent 'vis-brood': een broodje met gegrilde makreel, verkocht vanaf bootjes aan de Bosporus!", dishInfoEn: "Balik ekmek means 'fish bread': a sandwich with grilled mackerel, sold from boats on the Bosporus!", fact: "De Bosporus is op het smalste punt maar 700 meter breed en scheidt Europa van Azie!" }),
       // 8. Syrie (Land/triangle) - western Syria
-      mkLoc("Syrië", 34.89, 37.27, { type: "land", fact: "Damascus in Syrie is een van de oudste steden ter wereld - al meer dan 4000 jaar bewoond!" }),
+      mkLoc("Syrië", 34.89, 37.27, { type: "land", dish: "een rol shoarma", dishEn: "a shawarma wrap", emoji: "🌯", dishInfo: "Shoarma is vlees dat aan een draaiende spies wordt gegrild en in dunne plakjes wordt gesneden!", dishInfoEn: "Shawarma is meat grilled on a rotating spit and sliced into thin strips!", fact: "Damascus in Syrie is een van de oudste steden ter wereld - al meer dan 4000 jaar bewoond!" }),
       // 9. Westelijke Jordaanoever (Streek/gebied pin) - pin tip on northern West Bank
-      mkLoc("Westelijke Jordaanoever", 32.25, 35.25, { type: "gebied", fact: "De Westelijke Jordaanoever is ongeveer 6 keer zo klein als Nederland!" }),
+      mkLoc("Westelijke Jordaanoever", 32.25, 35.25, { type: "gebied", dish: "een plaat knafeh", dishEn: "a tray of knafeh", emoji: "🍰", dishInfo: "Knafeh is een warm toetje van smeltende kaas onder knapperige deegdraadjes met suikersiroop. De stad Nablus is er beroemd om!", dishInfoEn: "Knafeh is a warm dessert of melting cheese under crunchy pastry threads with sugar syrup. The city of Nablus is famous for it!", fact: "De Westelijke Jordaanoever is ongeveer 6 keer zo klein als Nederland!" }),
       // 10. Riad (Hoofdstad/square) - central Saudi-Arabia
-      mkLoc("Riad", 24.71, 46.68, { type: "capital", capitalOf: "Saudi-Arabië", fact: "In Riad kan het in de zomer wel 50 graden worden!" }),
+      mkLoc("Riad", 24.71, 46.68, { type: "capital", capitalOf: "Saudi-Arabië", dish: "een kan Arabische koffie", dishEn: "a pot of Arabic coffee", emoji: "☕", dishInfo: "Arabische koffie (gahwa) is lichtgekleurde koffie met kardemom, geschonken in piepkleine kopjes zonder oor!", dishInfoEn: "Arabic coffee (gahwa) is light coffee with cardamom, poured into tiny cups without handles!", fact: "In Riad kan het in de zomer wel 50 graden worden!" }),
       // 11. Ankara (Hoofdstad/square) - central Turkey
-      mkLoc("Ankara", 39.93, 32.86, { type: "capital", capitalOf: "Turkije", fact: "Ankara is pas sinds 1923 de hoofdstad - daarvoor was dat Istanbul!" }),
+      mkLoc("Ankara", 39.93, 32.86, { type: "capital", capitalOf: "Turkije", dish: "een döner kebab", dishEn: "a döner kebab", emoji: "🥙", dishInfo: "Döner betekent 'draaiend' in het Turks: het vlees draait rond langs het vuur!", dishInfoEn: "Döner means 'turning' in Turkish: the meat turns round and round next to the fire!", fact: "Ankara is pas sinds 1923 de hoofdstad - daarvoor was dat Istanbul!" }),
       // 12. Gazastrook (Streek/gebied pin) - pin tip on the Gaza coast
-      mkLoc("Gazastrook", 31.45, 34.40, { type: "gebied", fact: "De Gazastrook is maar 41 km lang, maar er wonen ruim 2 miljoen mensen!" }),
+      mkLoc("Gazastrook", 31.45, 34.40, { type: "gebied", dish: "een pan maftoul", dishEn: "a pot of maftoul", emoji: "🍲", dishInfo: "Maftoul zijn met de hand gerolde balletjes van tarwe, een soort grote couscous, met kip en kikkererwten!", dishInfoEn: "Maftoul are hand-rolled wheat balls, like big couscous, served with chicken and chickpeas!", fact: "De Gazastrook is maar 41 km lang, maar er wonen ruim 2 miljoen mensen!" }),
       // 13. Jeruzalem (Hoofdstad/square) - between Gaza and the West Bank
-      mkLoc("Jeruzalem", 31.77, 35.21, { type: "capital", capitalOf: "Israël", fact: "Jeruzalem is heilig voor drie godsdiensten: jodendom, christendom en islam!" }),
+      mkLoc("Jeruzalem", 31.77, 35.21, { type: "capital", capitalOf: "Israël", dish: "een Jeruzalem-bagel", dishEn: "a Jerusalem bagel", emoji: "🥯", dishInfo: "De Jeruzalem-bagel is een lang, ovaal broodje met sesamzaad. Je eet hem met een zakje kruiden (za'atar)!", dishInfoEn: "The Jerusalem bagel is a long, oval bread with sesame seeds. You eat it with a little bag of herbs (za'atar)!", fact: "Jeruzalem is heilig voor drie godsdiensten: jodendom, christendom en islam!" }),
       // 14. Teheran (Hoofdstad/square) - just south of the Caspian Sea
-      mkLoc("Teheran", 35.69, 51.39, { type: "capital", capitalOf: "Iran", fact: "Teheran ligt aan de voet van bergen van bijna 4000 meter hoog!" }),
+      mkLoc("Teheran", 35.69, 51.39, { type: "capital", capitalOf: "Iran", dish: "een bak saffraan-ijs", dishEn: "a tub of saffron ice cream", emoji: "🍨", dishInfo: "Bastani is Perzisch ijs met saffraan, rozenwater en pistache. Saffraan is het duurste kruid ter wereld!", dishInfoEn: "Bastani is Persian ice cream with saffron, rosewater and pistachio. Saffron is the most expensive spice in the world!", fact: "Teheran ligt aan de voet van bergen van bijna 4000 meter hoog!" }),
       // 15. Istanbul (Plaats/dot) - on the Bosporus
-      mkLoc("Istanbul", 41.01, 28.98, { type: "city", fact: "Istanbul is de enige wereldstad die op twee continenten ligt: Europa en Azie!" }),
+      mkLoc("Istanbul", 41.01, 28.98, { type: "city", dish: "een zak simits", dishEn: "a bag of simits", emoji: "🥨", dishInfo: "Een simit is een knapperige broodring met sesamzaad. In Istanbul verkopen straatventers ze vanaf karretjes!", dishInfoEn: "A simit is a crunchy bread ring with sesame seeds. In Istanbul street sellers sell them from carts!", fact: "Istanbul is de enige wereldstad die op twee continenten ligt: Europa en Azie!" }),
       // 16. Iran (Land/triangle) - central Iran
-      mkLoc("Iran", 32.47, 53.50, { type: "land", fact: "Iran heette vroeger Perzie - daar komen de beroemde Perzische tapijten vandaan!" }),
+      mkLoc("Iran", 32.47, 53.50, { type: "land", dish: "een pan tahdig", dishEn: "a pot of tahdig", emoji: "🍚", dishInfo: "Tahdig betekent 'bodem van de pan': de knapperige, goudbruine rijstkorst. In Iran vecht iedereen erom!", dishInfoEn: "Tahdig means 'bottom of the pot': the crispy, golden rice crust. In Iran everyone fights over it!", fact: "Iran heette vroeger Perzie - daar komen de beroemde Perzische tapijten vandaan!" }),
       // 17. Het Midden-Oosten (Streek/gebied pin) - pin tip in southern Iraq, north of Kuwait
-      mkLoc("Het Midden-Oosten", 30.66, 46.51, { type: "gebied", fact: "In het Midden-Oosten zit bijna de helft van alle olie op aarde!" }),
+      mkLoc("Het Midden-Oosten", 30.66, 46.51, { type: "gebied", dish: "een mega-mezzeschotel", dishEn: "a mega mezze platter", emoji: "🫓", dishInfo: "Mezze zijn allemaal kleine hapjes tegelijk op tafel, zoals hummus, falafel, olijven en brood. Iedereen pakt wat!", dishInfoEn: "Mezze are lots of small dishes on the table at once, like hummus, falafel, olives and bread. Everyone grabs some!", fact: "In het Midden-Oosten zit bijna de helft van alle olie op aarde!" }),
       // 18. Perzische Golf (Zee/waves) - northern part of the Gulf
-      mkLoc("Perzische Golf", 28.39, 49.83, { type: "water", fact: "De Perzische Golf is gemiddeld maar 50 meter diep - ondieper dan de meeste zeeen!" }),
+      mkLoc("Perzische Golf", 28.39, 49.83, { type: "water", dish: "een emmer garnalen", dishEn: "a bucket of shrimp", emoji: "🍤", dishInfo: "In de Perzische Golf wordt veel op garnalen gevist. In Bahrein en Koeweit eten ze die met gekruide rijst!", dishInfoEn: "Lots of shrimp are caught in the Persian Gulf. In Bahrain and Kuwait they eat them with spiced rice!", fact: "De Perzische Golf is gemiddeld maar 50 meter diep - ondieper dan de meeste zeeen!" }),
       // 19. Bagdad (Hoofdstad/square) - central Iraq
-      mkLoc("Bagdad", 33.31, 44.36, { type: "capital", capitalOf: "Irak", fact: "Ruim 1000 jaar geleden was Bagdad de grootste stad ter wereld!" }),
+      mkLoc("Bagdad", 33.31, 44.36, { type: "capital", capitalOf: "Irak", dish: "een doos kleicha-koekjes", dishEn: "a box of kleicha cookies", emoji: "🍪", dishInfo: "Kleicha zijn de nationale koekjes van Irak, gevuld met dadels of noten. Ze worden gebakken voor feestdagen!", dishInfoEn: "Kleicha are Iraq's national cookies, filled with dates or nuts. They're baked for holidays!", fact: "Ruim 1000 jaar geleden was Bagdad de grootste stad ter wereld!" }),
       // 20. Rode Zee (Zee/waves) - Red Sea between Egypt and Saudi-Arabia
-      mkLoc("Rode Zee", 24.64, 36.56, { type: "water", fact: "De Rode Zee is een van de zoutste zeeen ter wereld en wordt elk jaar een beetje breder!" }),
+      mkLoc("Rode Zee", 24.64, 36.56, { type: "water", dish: "een zak falafel", dishEn: "a bag of falafel", emoji: "🧆", dishInfo: "Falafel zijn gefrituurde balletjes van kikkererwten of tuinbonen. In Egypte heten ze ta'ameya!", dishInfoEn: "Falafel are fried balls of chickpeas or fava beans. In Egypt they're called ta'ameya!", fact: "De Rode Zee is een van de zoutste zeeen ter wereld en wordt elk jaar een beetje breder!" }),
     ]
   },
   "tegel7": {

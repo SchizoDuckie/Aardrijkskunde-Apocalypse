@@ -177,6 +177,58 @@ function spawnMegaBoom(x, y, canvasW, canvasH) {
   }
 }
 
+// ============================================================
+// FOOD THEME - delivered dishes instead of explosions
+// ============================================================
+const FOOD_COLORS = ["#ffcc33", "#ff9933", "#ff5533", "#66dd66", "#fff3cc", "#ff66aa", "#66ccff"];
+
+// Correct delivery: the dish bursts out as a fountain, with confetti
+function spawnFoodParty(x, y, canvasW, canvasH, emoji) {
+  const s = Math.max(canvasW, canvasH) / 400;
+  particles.push({ t: 'ring', x, y, r: 5 * s, mr: canvasW * 0.3, a: .8, lw: 4 * s, life: 40, age: 0 });
+  for (let i = 0; i < 40; i++) {
+    const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, sp = (4 + Math.random() * 9) * s;
+    particles.push({
+      t: 'emoji', ch: i % 4 ? emoji : pick(['⭐', '💛', '😋']), x, y,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, size: (14 + Math.random() * 18) * s,
+      rot: Math.random() * 6, vr: (Math.random() - .5) * .3, a: 1,
+      life: 70 + Math.random() * 50, age: 0, g: (.12 + Math.random() * .08) * s
+    });
+  }
+  for (let i = 0; i < 150; i++) {
+    const a = Math.random() * Math.PI * 2, sp = (2 + Math.random() * 10) * s;
+    particles.push({
+      t: 'spark', x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - Math.random() * 4 * s,
+      r: (1.5 + Math.random() * 3) * s, a: 1, color: pick(FOOD_COLORS),
+      life: 40 + Math.random() * 60, age: 0, g: (.02 + Math.random() * .03) * s
+    });
+  }
+}
+
+// Wrong address: the order splats on the doorstep
+function spawnSplat(x, y, s = 1, emoji) {
+  particles.push({
+    t: 'emoji', ch: emoji, x, y, vx: 0, vy: -3 * s, size: 34 * s, rot: 0, vr: .15,
+    a: 1, life: 60, age: 0, g: .15 * s
+  });
+  for (let i = 0; i < 12; i++) {
+    const a = Math.random() * Math.PI * 2, sp = (1 + Math.random() * 4) * s;
+    particles.push({
+      t: 'emoji', ch: emoji, x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2 * s,
+      size: (8 + Math.random() * 10) * s, rot: Math.random() * 6, vr: (Math.random() - .5) * .4,
+      a: 1, life: 40 + Math.random() * 30, age: 0, g: .15 * s
+    });
+  }
+  for (let i = 0; i < 50; i++) {
+    const a = Math.random() * Math.PI * 2, sp = (1 + Math.random() * 5) * s;
+    particles.push({
+      t: 'spark', x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - Math.random() * 2 * s,
+      r: (1 + Math.random() * 3) * s, a: 1, color: pick(["#cc3311", "#ffcc33", "#8b5a2b", "#fff3cc"]),
+      life: 25 + Math.random() * 35, age: 0, g: (.05 + Math.random() * .05) * s
+    });
+  }
+}
+
 function tickDraw(ctx, w, h) {
   ctx.clearRect(0, 0, w, h);
   for (const p of particles) {
@@ -223,6 +275,14 @@ function tickDraw(ctx, w, h) {
       ctx.fillStyle = 'rgba(60,40,30,1)';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (.5 + pr * .8), 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 1;
+    } else if (p.t === 'emoji') {
+      p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= .99; p.rot += p.vr;
+      ctx.save();
+      ctx.globalAlpha = p.a * (1 - Math.pow(pr, 2));
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.font = `${p.size}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(p.ch, 0, 0);
+      ctx.restore();
     } else if (p.t === 'scorch') {
       const r = p.r + (p.mr - p.r) * Math.min(pr * 3, 1);
       ctx.globalAlpha = p.a * (1 - pr);

@@ -168,9 +168,103 @@ const LANG = {
   }
 };
 
+// ============================================================
+// THEMES - per-set overrides of the in-game texts (set via `theme` on a dataset)
+// ============================================================
+const dishNl = l => l.tags.dish || 'een maaltijd';
+const dishEn = l => l.tags.dishEn || 'a meal';
+
+const THEMES = {
+  // Home delivery drone: food instead of explosions, every place gets its local dish
+  bezorg: {
+    nl: {
+      fx: 'food', projectile: '🚁', qIcon: '📦', roundIcon: '🛵',
+      missionComplete: 'ALLES BEZORGD',
+      debriefing: 'BEZORGRAPPORT',
+      ranks: { 90: 'BEZORGER VAN HET JAAR', 70: 'TURBO-BEZORGER', 50: 'BEZORGER', 30: 'FIETSKOERIER', 0: 'VERDWAALDE STAGIAIR' },
+      qTemplates: [
+        { w: 3, type: 'any', text: loc => `Bezorg ${dishNl(loc)} in ${loc.name}!` },
+        { w: 5, type: 'capital', text: loc => `De hoofdstad van ${loc.tags.capitalOf} heeft ${dishNl(loc)} besteld!` },
+        { w: 3, type: 'land', text: loc => `Heel ${loc.name} wacht op ${dishNl(loc)}. Waar moet je heen?` },
+        { w: 3, type: 'water', text: loc => `Een boot op de ${loc.name} heeft ${dishNl(loc)} besteld!` },
+        { w: 3, type: 'gebied', text: loc => `Bestelling voor ${loc.name}: ${dishNl(loc)}! Waar is dat?` },
+        { w: 2, type: 'capitalReverse', text: loc => `Spoedbestelling voor de hoofdstad van ${loc.name}! Waar moet de drone heen?` },
+      ],
+      wrong: [
+        (c, t) => `Oeps! ${c.name} kreeg ${dishNl(t)}... maar ze hadden ${dishNl(c)} besteld!`,
+        c => `Verkeerd adres! ${c.name} geeft je 1 ster: "Waar is ${dishNl(c)}?!"`,
+        c => `${c.name} belt de klantenservice: "Wij hebben dit niet besteld!"`,
+        (c, t) => `Mis! Je hebt ${dishNl(t)} in ${c.name} afgeleverd. Ze eten het toch maar op!`,
+        c => `Drone verdwaald! De navigatie zei "${c.name}"... Navigatie ontslagen!`,
+        c => `${c.name} doet de deur open... "Dit is niet van ons!"`,
+        c => `${c.name} stuurt de bestelling retour. Met een boze emoji! 😤`,
+        c => `Oeps! De drone landde in ${c.name} op een kameel. 🐪`,
+        c => `${c.name}: "Wij hadden ${dishNl(c)} besteld, niet dit!"`,
+        c => `Fout! In ${c.name} staat nu een verdwaalde pizzadoos. Niemand weet van wie.`,
+      ],
+      right: [
+        c => `Bezorgd in ${c.name}! ⭐⭐⭐⭐⭐`,
+        c => `Ding dong! ${c.name} smult van ${dishNl(c)}!`,
+        c => `Precies op de stoep in ${c.name}! Topografie-bezorger!`,
+        c => `Binnen 30 seconden in ${c.name}! Je krijgt fooi! 💰`,
+        c => `${c.name} zegt: "Nog warm! Heerlijk!"`,
+        c => `Raak! ${c.name} geeft je 5 sterren en een knuffel-emoji! 🤗`,
+        c => `Perfecte landing in ${c.name}! De drone doet een rondje van blijdschap!`,
+        c => `${c.name} heeft ${dishNl(c)} binnen! Bezorger van de maand!`,
+        c => `Afgeleverd in ${c.name}! De aardrijkskundeleraar wil ook iets bestellen!`,
+      ],
+      retryHint: loc => `Dat is ${loc.name}! Tik erop om ${dishNl(loc)} te bezorgen.`,
+      retryCorrect: loc => `Toch nog bezorgd! ${loc.name} is blij!`,
+    },
+    en: {
+      fx: 'food', projectile: '🚁', qIcon: '📦', roundIcon: '🛵',
+      missionComplete: 'ALL DELIVERED',
+      debriefing: 'DELIVERY REPORT',
+      ranks: { 90: 'COURIER OF THE YEAR', 70: 'TURBO COURIER', 50: 'COURIER', 30: 'BIKE MESSENGER', 0: 'LOST INTERN' },
+      qTemplates: [
+        { w: 3, type: 'any', text: loc => `Deliver ${dishEn(loc)} to ${loc.name}!` },
+        { w: 5, type: 'capital', text: loc => `The capital of ${loc.tags.capitalOf} ordered ${dishEn(loc)}!` },
+        { w: 3, type: 'land', text: loc => `All of ${loc.name} is waiting for ${dishEn(loc)}. Where to?` },
+        { w: 3, type: 'water', text: loc => `A boat on the ${loc.name} ordered ${dishEn(loc)}!` },
+        { w: 3, type: 'gebied', text: loc => `Order for ${loc.name}: ${dishEn(loc)}! Where is that?` },
+        { w: 2, type: 'capitalReverse', text: loc => `Rush order for the capital of ${loc.name}! Where does the drone go?` },
+      ],
+      wrong: [
+        (c, t) => `Oops! ${c.name} got ${dishEn(t)}... but they ordered ${dishEn(c)}!`,
+        c => `Wrong address! ${c.name} gives you 1 star: "Where is ${dishEn(c)}?!"`,
+        c => `${c.name} calls customer service: "We didn't order this!"`,
+        (c, t) => `Miss! You delivered ${dishEn(t)} to ${c.name}. They're eating it anyway!`,
+        c => `Drone got lost! The GPS said "${c.name}"... GPS is fired!`,
+        c => `${c.name} opens the door... "This isn't ours!"`,
+        c => `${c.name} sends the order back. With an angry emoji! 😤`,
+        c => `Oops! The drone landed on a camel in ${c.name}. 🐪`,
+        c => `${c.name}: "We ordered ${dishEn(c)}, not this!"`,
+        c => `Wrong! There's now a lost pizza box in ${c.name}. Nobody knows whose.`,
+      ],
+      right: [
+        c => `Delivered to ${c.name}! ⭐⭐⭐⭐⭐`,
+        c => `Ding dong! ${c.name} is enjoying ${dishEn(c)}!`,
+        c => `Right on the doorstep in ${c.name}! Geography courier!`,
+        c => `In ${c.name} within 30 seconds! You get a tip! 💰`,
+        c => `${c.name} says: "Still warm! Delicious!"`,
+        c => `Hit! ${c.name} gives you 5 stars and a hug emoji! 🤗`,
+        c => `Perfect landing in ${c.name}! The drone does a happy spin!`,
+        c => `${c.name} got ${dishEn(c)}! Courier of the month!`,
+        c => `Delivered to ${c.name}! The geography teacher wants to order too!`,
+      ],
+      retryHint: loc => `That's ${loc.name}! Tap it to deliver ${dishEn(loc)}.`,
+      retryCorrect: loc => `Delivered after all! ${loc.name} is happy!`,
+    },
+  },
+};
+
 let currentLang = localStorage.getItem('aa-lang') || 'nl';
 
-function T() { return LANG[currentLang]; }
+// In-game texts follow the theme of the running set; menus always use the base texts
+function T() {
+  const theme = typeof GS !== 'undefined' && GS && THEMES[GS.lastDataset?.theme];
+  return theme ? { ...LANG[currentLang], ...theme[currentLang] } : LANG[currentLang];
+}
 
 function setLanguage(lang) {
   currentLang = lang;

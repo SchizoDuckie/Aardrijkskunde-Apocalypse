@@ -119,6 +119,23 @@ function soundMissileIncoming() {
   osc.stop(audioCtx.currentTime + 0.7);
 }
 
+// Doorbell ding-dong + cash register (food theme, correct answer)
+function soundDelivered() {
+  if (!soundEnabled) return;
+  initAudio();
+  playTone(988, 0.35, 'sine', 0.2);
+  setTimeout(() => playTone(784, 0.5, 'sine', 0.2), 250);
+  setTimeout(() => { playTone(1568, 0.08, 'square', 0.06); playTone(2093, 0.15, 'square', 0.05) }, 650);
+}
+
+// Soggy splat (food theme, wrong answer)
+function soundSplat() {
+  if (!soundEnabled) return;
+  initAudio();
+  playNoise(0.25, 0.35, 400);
+  playTone(120, 0.2, 'sine', 0.2);
+}
+
 // Streak ding
 function soundStreak(count) {
   if (!soundEnabled) return;
