@@ -9,8 +9,8 @@ const HOMEWORK = {
   "tegel1": {
     label: "Groep 8 tegel 1: De wereldkaart", description: "Continenten, oceanen en denkbeeldige lijnen", hw: true, locations: [
       // Positions matched to textbook map (tegel1.jpg)
-      // 1. Noordpoolcirkel (Bijzonderheid/lijn) - line across northern Canada/Scandinavia/Russia
-      mkLoc("Noordpoolcirkel", 66.5, 60.0, { type: "bijzonderheid", fact: "Boven de Noordpoolcirkel gaat de zon in de zomer soms wekenlang niet onder!" }),
+      // 1. Noordpoolcirkel (Bijzonderheid/lijn) - label sits above Scandinavia on the line
+      mkLoc("Noordpoolcirkel", 66.5, 15.0, { type: "bijzonderheid", fact: "Boven de Noordpoolcirkel gaat de zon in de zomer soms wekenlang niet onder!" }),
       // 2. Indische Oceaan (Water/waves) - waves just south of the equator, between Africa and Australia
       mkLoc("Indische Oceaan", -8.0, 75.0, { type: "water", fact: "De Indische Oceaan is de warmste oceaan van de wereld!" }),
       // 3. Zuid-Amerika (Gebied/flag) - flag on South America
@@ -33,10 +33,57 @@ const HOMEWORK = {
       mkLoc("Atlantische Oceaan", 18.0, -70.0, { type: "water", fact: "De Atlantische Oceaan wordt elk jaar een paar centimeter breder!" }),
       // 12. Zuidpoolcirkel (Bijzonderheid/lijn) - line around Antarctica
       mkLoc("Zuidpoolcirkel", -66.5, 0.0, { type: "bijzonderheid", fact: "Onder de Zuidpoolcirkel is het 's winters wekenlang aaneengesloten donker!" }),
-      // 13. Noordelijke IJszee (Water/waves) - waves at the top over the north pole
-      mkLoc("Noordelijke IJszee", 85.0, 20.0, { type: "water", fact: "De Noordelijke IJszee is de kleinste en ondiepste oceaan ter wereld!" }),
+      // 13. Noordelijke IJszee (Water/waves) - waves above Novaya Zemlya/northern Russia
+      mkLoc("Noordelijke IJszee", 81.0, 50.0, { type: "water", fact: "De Noordelijke IJszee is de kleinste en ondiepste oceaan ter wereld!" }),
       // 14. Oceanie (Gebied/flag) - flag on islands east of Australia (between Australia and New Zealand)
       mkLoc("Oceanie", -20.0, 165.0, { type: "gebied", fact: "Oceanie bestaat uit Australie en duizenden kleine eilanden in de Grote Oceaan!" }),
+    ]
+  },
+  "tegel2": {
+    label: "Groep 8 tegel 2: Het Midden-Oosten", description: "Landen, hoofdsteden, zeeen en gebieden", hw: true, locations: [
+      // Positions matched to textbook map (groep8-tegel2.jpg)
+      // Cities/capitals use real coordinates; other markers were measured on the photo and
+      // converted to lat/lng with a projection fit on 17 control points (cities + coastline).
+      // 1. Mekka (Plaats/dot) - near the Red Sea coast
+      mkLoc("Mekka", 21.42, 39.83, { type: "city", fact: "Elk jaar komen er meer dan 2 miljoen pelgrims naar Mekka voor de hadj!" }),
+      // 2. Dubai (Plaats/dot) - on the Gulf coast of the Emirates
+      mkLoc("Dubai", 25.20, 55.27, { type: "city", fact: "In Dubai staat de Burj Khalifa, met 828 meter het hoogste gebouw ter wereld!" }),
+      // 3. Irak (Land/triangle) - western Iraq
+      mkLoc("Irak", 33.93, 41.94, { type: "land", fact: "In Irak lag Mesopotamie, waar 5000 jaar geleden het schrift werd uitgevonden!" }),
+      // 4. Turkije (Land/triangle) - central Anatolia, below Ankara
+      mkLoc("Turkije", 38.77, 33.69, { type: "land", fact: "Turkije ligt voor 97% in Azie en voor 3% in Europa!" }),
+      // 5. Saudi-Arabie (Land/triangle) - western Saudi-Arabia
+      mkLoc("Saudi-Arabië", 25.47, 40.80, { type: "land", fact: "Saudi-Arabie is meer dan 50 keer zo groot als Nederland en heeft geen enkele rivier!" }),
+      // 6. Israel (Land/triangle) - just south of Jerusalem
+      mkLoc("Israël", 31.07, 34.91, { type: "land", fact: "In Israel ligt de Dode Zee, het laagste punt op land: 430 meter onder zeeniveau!" }),
+      // 7. Bosporus (Zee/waves) - strait at Istanbul
+      mkLoc("Bosporus", 41.10, 29.06, { type: "water", fact: "De Bosporus is op het smalste punt maar 700 meter breed en scheidt Europa van Azie!" }),
+      // 8. Syrie (Land/triangle) - western Syria
+      mkLoc("Syrië", 34.89, 37.27, { type: "land", fact: "Damascus in Syrie is een van de oudste steden ter wereld - al meer dan 4000 jaar bewoond!" }),
+      // 9. Westelijke Jordaanoever (Streek/gebied pin) - pin tip on northern West Bank
+      mkLoc("Westelijke Jordaanoever", 32.25, 35.25, { type: "gebied", fact: "De Westelijke Jordaanoever is ongeveer 6 keer zo klein als Nederland!" }),
+      // 10. Riad (Hoofdstad/square) - central Saudi-Arabia
+      mkLoc("Riad", 24.71, 46.68, { type: "capital", capitalOf: "Saudi-Arabië", fact: "In Riad kan het in de zomer wel 50 graden worden!" }),
+      // 11. Ankara (Hoofdstad/square) - central Turkey
+      mkLoc("Ankara", 39.93, 32.86, { type: "capital", capitalOf: "Turkije", fact: "Ankara is pas sinds 1923 de hoofdstad - daarvoor was dat Istanbul!" }),
+      // 12. Gazastrook (Streek/gebied pin) - pin tip on the Gaza coast
+      mkLoc("Gazastrook", 31.45, 34.40, { type: "gebied", fact: "De Gazastrook is maar 41 km lang, maar er wonen ruim 2 miljoen mensen!" }),
+      // 13. Jeruzalem (Hoofdstad/square) - between Gaza and the West Bank
+      mkLoc("Jeruzalem", 31.77, 35.21, { type: "capital", capitalOf: "Israël", fact: "Jeruzalem is heilig voor drie godsdiensten: jodendom, christendom en islam!" }),
+      // 14. Teheran (Hoofdstad/square) - just south of the Caspian Sea
+      mkLoc("Teheran", 35.69, 51.39, { type: "capital", capitalOf: "Iran", fact: "Teheran ligt aan de voet van bergen van bijna 4000 meter hoog!" }),
+      // 15. Istanbul (Plaats/dot) - on the Bosporus
+      mkLoc("Istanbul", 41.01, 28.98, { type: "city", fact: "Istanbul is de enige wereldstad die op twee continenten ligt: Europa en Azie!" }),
+      // 16. Iran (Land/triangle) - central Iran
+      mkLoc("Iran", 32.47, 53.50, { type: "land", fact: "Iran heette vroeger Perzie - daar komen de beroemde Perzische tapijten vandaan!" }),
+      // 17. Het Midden-Oosten (Streek/gebied pin) - pin tip in southern Iraq, north of Kuwait
+      mkLoc("Het Midden-Oosten", 30.66, 46.51, { type: "gebied", fact: "In het Midden-Oosten zit bijna de helft van alle olie op aarde!" }),
+      // 18. Perzische Golf (Zee/waves) - northern part of the Gulf
+      mkLoc("Perzische Golf", 28.39, 49.83, { type: "water", fact: "De Perzische Golf is gemiddeld maar 50 meter diep - ondieper dan de meeste zeeen!" }),
+      // 19. Bagdad (Hoofdstad/square) - central Iraq
+      mkLoc("Bagdad", 33.31, 44.36, { type: "capital", capitalOf: "Irak", fact: "Ruim 1000 jaar geleden was Bagdad de grootste stad ter wereld!" }),
+      // 20. Rode Zee (Zee/waves) - Red Sea between Egypt and Saudi-Arabia
+      mkLoc("Rode Zee", 24.64, 36.56, { type: "water", fact: "De Rode Zee is een van de zoutste zeeen ter wereld en wordt elk jaar een beetje breder!" }),
     ]
   },
   "tegel7": {
