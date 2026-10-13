@@ -246,7 +246,19 @@ const EXTRAS = {
   }
 };
 
-let customSets = JSON.parse(localStorage.getItem('aa-custom-sets') || '[]');
+// Dutch country name -> Natural Earth name in world-atlas, used to glow a country's outline
+const COUNTRY_OUTLINES = {
+  "Noorwegen": "Norway", "Zweden": "Sweden", "Denemarken": "Denmark", "Finland": "Finland", "IJsland": "Iceland",
+  "Polen": "Poland", "Rusland": "Russia", "Frankrijk": "France", "Spanje": "Spain", "Portugal": "Portugal",
+  "Italië": "Italy", "Italie": "Italy", "Griekenland": "Greece", "Cyprus": "Cyprus",
+  "Litouwen": "Lithuania", "Letland": "Latvia", "Estland": "Estonia", "Oekraïne": "Ukraine", "Wit-Rusland": "Belarus",
+  "Turkije": "Turkey", "Irak": "Iraq", "Iran": "Iran", "Saudi-Arabië": "Saudi Arabia", "Israël": "Israel", "Syrië": "Syria",
+  "Nederland": "Netherlands", "België": "Belgium", "Belgie": "Belgium", "Duitsland": "Germany", "Oostenrijk": "Austria",
+  "Zwitserland": "Switzerland", "Tsjechië": "Czechia", "Hongarije": "Hungary", "Ierland": "Ireland", "VK": "United Kingdom",
+  "Verenigd Koninkrijk": "United Kingdom", "Libanon": "Lebanon", "Jordanië": "Jordan", "Egypte": "Egypt", "Koeweit": "Kuwait",
+};
+
+let customSets =JSON.parse(localStorage.getItem('aa-custom-sets') || '[]');
 
 function saveCustomSets() {
   localStorage.setItem('aa-custom-sets', JSON.stringify(customSets));

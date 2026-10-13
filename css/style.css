@@ -249,6 +249,8 @@ body { height: 100dvh }
   animation: missileShake .1s infinite alternate;
   z-index: 802;
 }
+.country-glow { animation: countryGlow 1.2s ease-in-out infinite alternate }
+@keyframes countryGlow { from { stroke-opacity: .15 } to { stroke-opacity: .5 } }
 .missile.drone { filter: drop-shadow(0 0 12px #ffcc33) drop-shadow(0 0 24px #66ccff); animation: droneWobble .25s infinite alternate }
 @keyframes droneWobble { from { transform: rotate(-8deg) } to { transform: rotate(8deg) } }
 .missile-trail {

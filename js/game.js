@@ -27,6 +27,8 @@ function startGame(dataset) {
 
   GS.defaultBounds = L.latLngBounds(GS.locs.map(l => [l.lat, l.lng])).pad(0.15);
   map.fitBounds(GS.defaultBounds);
+  glowLayers = [];
+  loadCountryShapes();
 
   markers = {};
   for (const loc of GS.locs) {
@@ -70,6 +72,53 @@ function setupCanvas(wrap) {
   boomCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
+// ============================================================
+// COUNTRY OUTLINE GLOW
+// ============================================================
+let countryShapes = null, glowLayers = [];
+
+// Natural Earth 1:50m borders, fetched once and indexed by name
+function loadCountryShapes() {
+  if (!countryShapes) {
+    countryShapes = fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json')
+      .then(r => r.json())
+      .then(topo => {
+        const byName = {};
+        for (const f of topojson.feature(topo, topo.objects.countries).features) byName[f.properties.name] = f;
+        return byName;
+      })
+      .catch(() => ({}));
+  }
+  return countryShapes;
+}
+
+function clearGlow() {
+  for (const l of glowLayers) l.remove();
+  glowLayers = [];
+}
+
+// kind: 'correct' (green) or 'wrong' (red); only for locations of type land
+function glowCountry(loc, kind) {
+  clearGlow();
+  const name = loc.tags.type === 'land' && COUNTRY_OUTLINES[loc.name];
+  if (!name) return;
+  const q = GS.question;
+  loadCountryShapes().then(shapes => {
+    if (!map || !GS || GS.question !== q || !shapes[name]) return;
+    clearGlow();
+    const color = kind === 'wrong' ? '#ff4400' : '#44ff88';
+    // wide faint stroke underneath fakes the glow; SVG filters are too slow on big polygons
+    glowLayers.push(L.geoJSON(shapes[name], {
+      interactive: false, className: 'country-glow',
+      style: { color, weight: 12, opacity: .3, fill: false }
+    }).addTo(map));
+    glowLayers.push(L.geoJSON(shapes[name], {
+      interactive: false,
+      style: { color, weight: 2.5, opacity: 1, fillColor: color, fillOpacity: .12 }
+    }).addTo(map));
+  });
+}
+
 function resetMarkers() {
   for (const loc of GS.locs) {
     const el = document.querySelector(`.nuke-marker[data-id="${loc.id}"]`);
@@ -79,7 +128,7 @@ function resetMarkers() {
 
 function nextQ() {
   if (GS.round >= GS.totalQ) { endGame(); return }
-  resetMarkers();
+  resetMarkers(); clearGlow();
   map.flyToBounds(GS.defaultBounds, { duration: .5, padding: [20, 20] });
   const q = genQ(GS.locs, GS.used);
   if (!q) { endGame(); return }
@@ -168,6 +217,8 @@ function handleClick(loc) {
     el.insertBefore(lbl, el.firstChild);
   }
 
+  glowCountry(loc, correct ? 'correct' : 'wrong');
+
   if (correct) {
     GS.score += 100 + GS.streak * 25; GS.streak++;
     if (GS.streak > GS.best) GS.best = GS.streak;
@@ -191,6 +242,7 @@ function handleClick(loc) {
         correctEl.insertBefore(lbl, correctEl.firstChild);
       }
       map.flyTo([correctLoc.lat, correctLoc.lng], 6, { duration: .8 });
+      glowCountry(correctLoc, 'correct');
       showToast(`👆 ${T().retryHint(correctLoc)}`, fact, 'correct');
       GS.retrying = true; GS.busy = false;
     }, 6000);
