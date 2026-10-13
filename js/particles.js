@@ -182,6 +182,22 @@ function spawnMegaBoom(x, y, canvasW, canvasH) {
 // ============================================================
 const FOOD_COLORS = ["#ffcc33", "#ff9933", "#ff5533", "#66dd66", "#fff3cc", "#ff66aa", "#66ccff"];
 
+// Rasterizing color emoji with fillText every frame is very slow, so each emoji is
+// drawn once to a small canvas and particles blit that sprite
+const EMOJI_SPRITE_SIZE = 64;
+const emojiSprites = {};
+function emojiSprite(ch) {
+  if (!emojiSprites[ch]) {
+    const c = document.createElement('canvas');
+    c.width = c.height = EMOJI_SPRITE_SIZE;
+    const x = c.getContext('2d');
+    x.font = `${EMOJI_SPRITE_SIZE * .8}px sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText(ch, EMOJI_SPRITE_SIZE / 2, EMOJI_SPRITE_SIZE / 2);
+    emojiSprites[ch] = c;
+  }
+  return emojiSprites[ch];
+}
+
 // Correct delivery: the dish bursts out as a fountain, with confetti
 function spawnFoodParty(x, y, canvasW, canvasH, emoji) {
   const s = Math.max(canvasW, canvasH) / 400;
@@ -230,6 +246,7 @@ function spawnSplat(x, y, s = 1, emoji) {
 }
 
 function tickDraw(ctx, w, h) {
+  const dpr = window.devicePixelRatio || 1;
   ctx.clearRect(0, 0, w, h);
   for (const p of particles) {
     p.age++;
@@ -277,12 +294,12 @@ function tickDraw(ctx, w, h) {
       ctx.globalAlpha = 1;
     } else if (p.t === 'emoji') {
       p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= .99; p.rot += p.vr;
-      ctx.save();
+      const cos = Math.cos(p.rot) * p.size / EMOJI_SPRITE_SIZE, sin = Math.sin(p.rot) * p.size / EMOJI_SPRITE_SIZE;
       ctx.globalAlpha = p.a * (1 - Math.pow(pr, 2));
-      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
-      ctx.font = `${p.size}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(p.ch, 0, 0);
-      ctx.restore();
+      ctx.setTransform(cos * dpr, sin * dpr, -sin * dpr, cos * dpr, p.x * dpr, p.y * dpr);
+      ctx.drawImage(emojiSprite(p.ch), -EMOJI_SPRITE_SIZE / 2, -EMOJI_SPRITE_SIZE / 2);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalAlpha = 1;
     } else if (p.t === 'scorch') {
       const r = p.r + (p.mr - p.r) * Math.min(pr * 3, 1);
       ctx.globalAlpha = p.a * (1 - pr);
