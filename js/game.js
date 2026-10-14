@@ -8,7 +8,7 @@ window.addEventListener('resize', () => { isMobile = window.innerWidth < 640; up
 function startGame(dataset) {
   showScreen('game');
   GS = {
-    locs: dataset.locations, totalQ: Math.min(dataset.locations.length, 15),
+    locs: dataset.locations, totalQ: dataset.locations.length,
     round: 0, score: 0, streak: 0, best: 0, used: new Set(),
     question: null, busy: false, retrying: false, lastDataset: dataset
   };
